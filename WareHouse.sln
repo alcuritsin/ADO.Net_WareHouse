@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouse_CLI", "WareHouse_CLI\WareHouse_CLI.csproj", "{53B05A57-E635-44B0-9AB9-D67C2EA5B9F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibDB", "LibDB\LibDB.csproj", "{03793678-5FB4-4BCE-BC15-3995199CCF75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibDB_Core", "..\LibDB\LibDB_Core\LibDB_Core.csproj", "{8EDE37B2-0902-4059-986D-6E5FD68D718A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53B05A57-E635-44B0-9AB9-D67C2EA5B9F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B05A57-E635-44B0-9AB9-D67C2EA5B9F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B05A57-E635-44B0-9AB9-D67C2EA5B9F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B05A57-E635-44B0-9AB9-D67C2EA5B9F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03793678-5FB4-4BCE-BC15-3995199CCF75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03793678-5FB4-4BCE-BC15-3995199CCF75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03793678-5FB4-4BCE-BC15-3995199CCF75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03793678-5FB4-4BCE-BC15-3995199CCF75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EDE37B2-0902-4059-986D-6E5FD68D718A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EDE37B2-0902-4059-986D-6E5FD68D718A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EDE37B2-0902-4059-986D-6E5FD68D718A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EDE37B2-0902-4059-986D-6E5FD68D718A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
