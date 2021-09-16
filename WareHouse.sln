@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouse_CLI", "WareHouse_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibDB", "LibDB\LibDB.csproj", "{03793678-5FB4-4BCE-BC15-3995199CCF75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibDB_Core", "..\LibDB\LibDB_Core\LibDB_Core.csproj", "{8EDE37B2-0902-4059-986D-6E5FD68D718A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibDB_Connect_Core", "..\LibDB\LibDB_Connect_Core\LibDB_Connect_Core.csproj", "{8EDE37B2-0902-4059-986D-6E5FD68D718A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\LibDB\LibDB_Core\LibDB_Core.csproj" />
+      <ProjectReference Include="..\..\LibDB\LibDB_Connect_Core\LibDB_Connect_Core.csproj" />
     </ItemGroup>
 
 </Project>
