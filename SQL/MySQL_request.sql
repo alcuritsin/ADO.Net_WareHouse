@@ -23,8 +23,6 @@ CREATE TABLE table_products
     FOREIGN KEY (supplier_id) REFERENCES table_product_suppliers(id)
 );
 
-
-
 INSERT INTO host1323541_pd3.table_product_suppliers (suppliers_name)
 VALUES ('Село зелёное');
 
@@ -54,6 +52,14 @@ VALUES ('Птичье Молоко', 2, 2, 35, 25.3, '2021-09-10');
 INSERT INTO host1323541_pd3.table_products (product_name, type_id, supplier_id, product_quantity, product_cost,
                                             date_delivery)
 VALUES ('Майонез', 1, 3, 20, 49.8, '2021-09-10');
+
+# Отображение всей информации о товаре
+SELECT table_products.id, product_name, type_name,suppliers_name,product_quantity,product_cost,date_delivery
+FROM table_products,table_product_types, table_product_suppliers
+WHERE table_products.type_id = table_product_types.id AND table_products.supplier_id = table_product_suppliers.id;
+
+
+
 
 /*
 SELECT login, last_name, first_name

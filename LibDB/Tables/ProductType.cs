@@ -1,6 +1,6 @@
 ﻿namespace LibDB
 {
-    public class ProductTypes
+    public class ProductType
     {
         //  Тип продукции
         public int Id { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace LibDB
 {
-    public class ProductSuppliers
+    public class ProductSupplier
     {
         //  Поставщик
         public int Id { get; set; }
