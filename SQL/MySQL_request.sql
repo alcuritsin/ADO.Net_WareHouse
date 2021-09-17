@@ -20,7 +20,7 @@ CREATE TABLE table_products
     product_cost     DOUBLE      NOT NULL,
     date_delivery    DATE        NOT NULL,
     FOREIGN KEY (type_id) REFERENCES table_product_types (id),
-    FOREIGN KEY (supplier_id) REFERENCES table_product_suppliers(id)
+    FOREIGN KEY (supplier_id) REFERENCES table_product_suppliers (id)
 );
 
 INSERT INTO host1323541_pd3.table_product_suppliers (suppliers_name)
@@ -54,17 +54,34 @@ INSERT INTO host1323541_pd3.table_products (product_name, type_id, supplier_id, 
 VALUES ('Майонез', 1, 3, 20, 49.8, '2021-09-10');
 
 # Отображение всей информации о товаре
-SELECT table_products.id, product_name, type_name,suppliers_name,product_quantity,product_cost,date_delivery
-FROM table_products,table_product_types, table_product_suppliers
-WHERE table_products.type_id = table_product_types.id AND table_products.supplier_id = table_product_suppliers.id;
+SELECT table_products.id, product_name, type_name, suppliers_name, product_quantity, product_cost, date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id;
 
 # Отображение всех типов товаров
-SELECT id,type_name
+SELECT id, type_name
 FROM table_product_types;
 
 # Отображение всех поставщиков
-SELECT id,suppliers_name
+SELECT id, suppliers_name
 FROM table_product_suppliers;
+
+# Показать товар с максимальным количеством
+SELECT MAX(product_quantity) as max
+FROM table_products;
+
+# Показать товар с максимальным количеством
+SELECT table_products.id, product_name, type_name, suppliers_name, MAX(product_quantity) as product_quantity, product_cost, date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id;
+
+
 /*
 SELECT login, last_name, first_name
 FROM table_account, table_person

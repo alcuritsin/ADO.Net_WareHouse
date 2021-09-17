@@ -34,7 +34,7 @@ using WareHouse_CLI;
                 break;
             case "4": //  4. Показать товар с максимальным количеством
                 db.Open();
-                //CLI.ShowValue(db.GetMaxEnergyValue(), "Максимальное значение колорийности: ");
+                CLI.ShowProduct(db.GetProductMaxQuantity());
                 db.Close();
                 break;
             case "5": //  5. Показать товар с минимальным количеством
