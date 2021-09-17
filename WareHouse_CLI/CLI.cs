@@ -61,6 +61,23 @@ namespace WareHouse_CLI
             Console.WriteLine($"      id: {productType.Id}\n" +
                               $"TypeName: {productType.TypeName}");
         }
+        
+        public static void ShowSuppliers(List<ProductSupplier> productSuppliers)
+        {
+            Console.WriteLine("Отображение всех поставщиков:");
+            foreach (ProductSupplier productSupplier in productSuppliers)
+            {
+                ShowSupplier(productSupplier);
+            }
+            Console.WriteLine("--- --- --- --- ---");
+        }
+
+        public static void ShowSupplier(ProductSupplier productSupplier)
+        {
+            Console.WriteLine("*** *** *** *** ***");
+            Console.WriteLine($"      id: {productSupplier.Id}\n" +
+                              $"TypeName: {productSupplier.SupplierName}");
+        }
 
         public static void SayGoodBy()
         {

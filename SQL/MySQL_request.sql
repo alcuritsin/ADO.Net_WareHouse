@@ -62,6 +62,9 @@ WHERE table_products.type_id = table_product_types.id AND table_products.supplie
 SELECT id,type_name
 FROM table_product_types;
 
+# Отображение всех поставщиков
+SELECT id,suppliers_name
+FROM table_product_suppliers;
 /*
 SELECT login, last_name, first_name
 FROM table_account, table_person

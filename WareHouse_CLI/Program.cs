@@ -29,7 +29,7 @@ using WareHouse_CLI;
 
             case "3": //  3. Отображение всех поставщиков
                 db.Open();
-                //CLI.ShowListValue(db.GetColorProduct(), "Цвета продуктов:");
+                CLI.ShowSuppliers(db.GetSuppliers());
                 db.Close();
                 break;
             case "4": //  4. Показать товар с максимальным количеством

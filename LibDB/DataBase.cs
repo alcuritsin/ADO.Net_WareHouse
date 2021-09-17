@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using LibDB_Core;
+using MySql.Data.MySqlClient;
 
 namespace LibDB
 {
@@ -15,9 +16,8 @@ namespace LibDB
 SELECT table_products.id, product_name, type_name,suppliers_name,product_quantity,product_cost,date_delivery
 FROM table_products,table_product_types, table_product_suppliers
 WHERE table_products.type_id = table_product_types.id AND table_products.supplier_id = table_product_suppliers.id;";
-            _command.CommandText = request;
 
-            var result = _command.ExecuteReader();
+            var result = GetAnswer(request);
 
             while (result.Read())
             {
@@ -53,9 +53,8 @@ WHERE table_products.type_id = table_product_types.id AND table_products.supplie
                 @"
 SELECT id,type_name
 FROM table_product_types;";
-            _command.CommandText = request;
 
-            var result = _command.ExecuteReader();
+            var result = GetAnswer(request);
 
             while (result.Read())
             {
@@ -71,6 +70,33 @@ FROM table_product_types;";
             }
 
             return types;
+        }
+
+        public List<ProductSupplier> GetSuppliers()
+        {
+            // Отображение всех поставщиков 
+            List<ProductSupplier> productSuppliers = new List<ProductSupplier>();
+
+            string request =
+                @"
+SELECT id,suppliers_name
+FROM table_product_suppliers;";
+            MySqlDataReader result = GetAnswer(request);
+
+            while (result.Read())
+            {
+                var id = result.GetInt32("id");
+                var suppliers_name = result.GetString("suppliers_name");
+
+                productSuppliers.Add(new ProductSupplier
+                    {
+                        Id = id,
+                        SupplierName = suppliers_name
+                    }
+                );
+            }
+
+            return productSuppliers;
         }
     }
 }
