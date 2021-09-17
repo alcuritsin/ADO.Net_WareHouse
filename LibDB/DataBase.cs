@@ -157,5 +157,30 @@ WHERE table_products.type_id = table_product_types.id
 
             return product;
         }
+
+        public Product GetProductMinCost()
+        {
+            // Показать товар с минимальной себестоимостью
+            Product product = new Product();
+            
+            string request =
+                @"
+SELECT table_products.id, product_name, type_name, suppliers_name,
+       product_quantity, MIN(product_cost) as product_cost, date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id;";
+            
+            MySqlDataReader result = GetAnswer(request);
+            
+            while (result.Read())
+            {
+                product = GetProduct(result);
+            }
+
+            return product;
+        }
     }
 }

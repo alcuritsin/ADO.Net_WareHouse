@@ -44,7 +44,7 @@ using WareHouse_CLI;
                 break;
             case "6": //  6. Показать товар с минимальной себестоимостью
                 db.Open();
-                //CLI.ShowValue(db.GetAvgEnergyValue(), "Среднее значение колорийности: ");
+                CLI.ShowProduct(db.GetProductMinCost());
                 db.Close();
                 break;
             case "7": //  7. Показать товар с максимальной себестоимостью
