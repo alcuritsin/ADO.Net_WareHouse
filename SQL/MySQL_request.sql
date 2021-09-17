@@ -172,7 +172,7 @@ WHERE table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id
   AND table_products.supplier_id = 1;
 
-# Показать самый старый товар на складе
+# Показать самый старый товар на складе --done
 SELECT table_products.id,
        product_name,
        type_name,

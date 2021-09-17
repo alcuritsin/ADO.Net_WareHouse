@@ -265,7 +265,7 @@ WHERE table_products.type_id = table_product_types.id
         }
         public List<Product> GetProuctFromSupplier(int product_supplier)
         {
-            // Показать товары, заданной категории
+            // Показать товары, заданного поставщика
             List<Product> products = new List<Product>();
 
             string request =
@@ -293,7 +293,39 @@ WHERE table_products.type_id = table_product_types.id
 
             return products;
         }
-        
+
+        public Product GetProductOld()
+        {
+            // Показать самый старый товар на складе
+            
+            Product product = new Product();
+
+            string request =
+                @"
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.date_delivery = (SELECT MIN(date_delivery) FROM table_products)
+  AND table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id;";
+
+            MySqlDataReader result = GetAnswer(request);
+
+            while (result.Read())
+            {
+                product = GetProduct(result);
+            }
+
+            return product;
+
+        }
         
     }
 }

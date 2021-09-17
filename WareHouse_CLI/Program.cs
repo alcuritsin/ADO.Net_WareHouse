@@ -92,6 +92,12 @@ do
             db.Close();
             
             break;
+        
+        case "040_3": // 040_3 - Показать самый старый товар на складе
+            db.Open();
+            CLI.ShowProduct(db.GetProductOld());
+            db.Close();
+            break;
         case "040_<": // 040_< - Назад
             menuLevel = "000";
             break;
