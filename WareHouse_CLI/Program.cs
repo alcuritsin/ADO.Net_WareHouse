@@ -49,7 +49,7 @@ using WareHouse_CLI;
                 break;
             case "7": //  7. Показать товар с максимальной себестоимостью
                 db.Open();
-                //db.IsertProduct(CLI.InoutProduct());
+                CLI.ShowProduct(db.GetProductMaxCost());
                 db.Close();
                 break;
             case "0": // 0. Выход

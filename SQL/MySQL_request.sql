@@ -56,7 +56,7 @@ INSERT INTO host1323541_pd3.table_products (product_name, type_id, supplier_id, 
                                             date_delivery)
 VALUES ('Майонез', 1, 3, 20, 49.8, '2021-09-10');
 
-# Задание 3
+# Задание 3 --done
 # Отображение всей информации о товаре -done
 SELECT table_products.id, product_name, type_name, suppliers_name, product_quantity, product_cost, date_delivery
 FROM table_products,
@@ -86,7 +86,7 @@ FROM table_products,
 WHERE table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
 
-# Показать товар с минимальным количеством
+# Показать товар с минимальным количеством --done
 SELECT table_products.id, product_name, type_name, suppliers_name,
        MIN(product_quantity) as product_quantity, product_cost, date_delivery
 FROM table_products,
@@ -95,7 +95,7 @@ FROM table_products,
 WHERE table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
 
-# Показать товар с минимальной себестоимостью
+# Показать товар с минимальной себестоимостью --done
 SELECT table_products.id, product_name, type_name, suppliers_name,
        product_quantity, MIN(product_cost) as product_cost, date_delivery
 FROM table_products,
@@ -104,7 +104,7 @@ FROM table_products,
 WHERE table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
 
-# Показать товар с максимальной себестоимостью
+# Показать товар с максимальной себестоимостью --done
 SELECT table_products.id, product_name, type_name, suppliers_name,
        product_quantity, MAX(product_cost) as product_cost, date_delivery
 FROM table_products,

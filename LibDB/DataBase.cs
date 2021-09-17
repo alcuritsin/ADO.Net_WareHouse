@@ -32,22 +32,22 @@ WHERE table_products.type_id = table_product_types.id AND table_products.supplie
         {
             // Из запроса формирует карточку товара
             var id = answer.GetInt32("id");
-            var rpoduct_name = answer.GetString("product_name");
-            var type_name = answer.GetString("type_name");
-            var suppliers_name = answer.GetString("suppliers_name");
-            var product_quantity = answer.GetDouble("product_quantity");
-            var product_cost = answer.GetDouble("product_cost");
-            var date_delivery = answer.GetDateTime("date_delivery");
+            var rpoductName = answer.GetString("product_name");
+            var typeName = answer.GetString("type_name");
+            var suppliersName = answer.GetString("suppliers_name");
+            var productQuantity = answer.GetDouble("product_quantity");
+            var productCost = answer.GetDouble("product_cost");
+            var dateDelivery = answer.GetDateTime("date_delivery");
 
             Product product = new Product
             {
                 Id = id,
-                ProductName = rpoduct_name,
-                ProducType = type_name,
-                ProducSupplier = suppliers_name,
-                ProductQuantity = product_quantity,
-                ProductCost = product_cost,
-                DeliveryDate = date_delivery
+                ProductName = rpoductName,
+                ProducType = typeName,
+                ProducSupplier = suppliersName,
+                ProductQuantity = productQuantity,
+                ProductCost = productCost,
+                DeliveryDate = dateDelivery
             };
 
             return product;
@@ -67,12 +67,12 @@ FROM table_product_types;";
             while (result.Read())
             {
                 var id = result.GetInt32("id");
-                var type_name = result.GetString("type_name");
+                var typeName = result.GetString("type_name");
 
                 types.Add(new ProductType
                     {
                         Id = id,
-                        TypeName = type_name
+                        TypeName = typeName
                     }
                 );
             }
@@ -94,12 +94,12 @@ FROM table_product_suppliers;";
             while (result.Read())
             {
                 var id = result.GetInt32("id");
-                var suppliers_name = result.GetString("suppliers_name");
+                var suppliersName = result.GetString("suppliers_name");
 
                 productSuppliers.Add(new ProductSupplier
                     {
                         Id = id,
-                        SupplierName = suppliers_name
+                        SupplierName = suppliersName
                     }
                 );
             }
@@ -182,5 +182,31 @@ WHERE table_products.type_id = table_product_types.id
 
             return product;
         }
+
+        public Product GetProductMaxCost()
+        {
+            // Показать товар с максимальной себестоимостью
+            Product product = new Product();
+            
+            string request =
+                @"
+SELECT table_products.id, product_name, type_name, suppliers_name,
+       product_quantity, MAX(product_cost) as product_cost, date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id;";
+            
+            MySqlDataReader result = GetAnswer(request);
+            
+            while (result.Read())
+            {
+                product = GetProduct(result);
+            }
+
+            return product;
+        }
+        
     }
 }
