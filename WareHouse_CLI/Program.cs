@@ -24,6 +24,7 @@ do
         case "000_1": // 000_1 - Функциональность из Задания 3
             menuLevel = "030";
             break;
+        
         case "000_2": // 000_2 - Функциональность из Задания 4
             menuLevel = "040";
             break;
@@ -44,29 +45,35 @@ do
             CLI.ShowSuppliers(db.GetSuppliers());
             db.Close();
             break;
+        
         case "030_4": // 030_4. Показать товар с максимальным количеством
             db.Open();
             CLI.ShowProduct(db.GetProductMaxQuantity());
             db.Close();
             break;
+        
         case "030_5": // 030_5. Показать товар с минимальным количеством
             db.Open();
             CLI.ShowProduct(db.GetProductMinQuantity());
             db.Close();
             break;
+        
         case "030_6": // 030_6. Показать товар с минимальной себестоимостью
             db.Open();
             CLI.ShowProduct(db.GetProductMinCost());
             db.Close();
             break;
+        
         case "030_7": // 030_7. Показать товар с максимальной себестоимостью
             db.Open();
             CLI.ShowProduct(db.GetProductMaxCost());
             db.Close();
             break;
+        
         case "030_<": // 030_< - Назад
             menuLevel = "000";
             break;
+        
         case "040_1": // 040_1 - Показать товары, заданной категории
 
             db.Open();
@@ -84,20 +91,27 @@ do
             db.Open();
             CLI.ShowSuppliers(db.GetSuppliers());
             db.Close();
-            
+
             int supplier_id = CLI.InputChoice("Введите поставщика (int): ");
-            
+
             db.Open();
             CLI.ShowProducts(db.GetProuctFromSupplier(supplier_id));
             db.Close();
-            
+
             break;
-        
+
         case "040_3": // 040_3 - Показать самый старый товар на складе
             db.Open();
             CLI.ShowProduct(db.GetProductOld());
             db.Close();
             break;
+        
+        case "040_4": // 040_4 - Показать среднее количество товаров по каждому типу товара
+            db.Open();
+            CLI.OutTabl(db.GetProductAvgQuantity());
+            db.Close();
+            break;
+        
         case "040_<": // 040_< - Назад
             menuLevel = "000";
             break;

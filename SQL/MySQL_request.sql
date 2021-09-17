@@ -141,7 +141,7 @@ WHERE table_products.product_cost = (SELECT MAX(product_cost) FROM table_product
   AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
 
-# Задание 4
+# Задание 4 --done
 # Показать товары, заданной категории --done
 SELECT table_products.id,
        product_name,
@@ -187,14 +187,8 @@ WHERE table_products.date_delivery = (SELECT MIN(date_delivery) FROM table_produ
   AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
 
-# Показать среднее количество товаров по каждому типу товара
+# Показать среднее количество товаров по каждому типу товара --done
 SELECT t.type_name as type_name, AVG(p.product_quantity) as avg
 FROM table_products as p 
 INNER JOIN table_product_types t ON p.type_id = t.id
 GROUP BY p.type_id;
-
-/*
-SELECT login, last_name, first_name
-FROM table_account, table_person
-WHERE table_person.id = table_account.id;
-*/

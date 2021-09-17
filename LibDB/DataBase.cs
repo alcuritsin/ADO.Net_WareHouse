@@ -326,6 +326,32 @@ WHERE table_products.date_delivery = (SELECT MIN(date_delivery) FROM table_produ
             return product;
 
         }
+
+        public List<List<string>> GetProductAvgQuantity()
+        {
+            List<List<string>> tupes = new List<List<string>>();
+            
+            string request =
+                @"
+SELECT t.type_name as type_name, AVG(p.product_quantity) as avg
+FROM table_products as p 
+INNER JOIN table_product_types t ON p.type_id = t.id
+GROUP BY p.type_id;";
+
+            var result = GetAnswer(request);
+            
+            while (result.Read())
+            {
+                List<string> item = new List<string>()
+                {
+                    result.GetString("type_name"),
+                    result.GetDouble("avg").ToString()
+                };
+                tupes.Add(item);
+            }
+
+            return tupes;
+        }
         
     }
 }
