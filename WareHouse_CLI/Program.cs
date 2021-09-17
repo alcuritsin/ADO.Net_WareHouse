@@ -67,7 +67,18 @@ do
         case "030_<": // 030_< - Назад
             menuLevel = "000";
             break;
-
+        case "040_1": // 040_1 - Показать товары, заданной категории
+            
+            db.Open();
+            CLI.ShowTypes(db.GetTypes());
+            db.Close();
+            
+            int type_id = CLI.InputChoice("Введите тип: ");
+            
+            db.Open();
+            CLI.ShowProducts(db.GetProuctFromType(type_id));
+            db.Close();
+            break;
         case "040_<": // 040_< - Назад
             menuLevel = "000";
             break;

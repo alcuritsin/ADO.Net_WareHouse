@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LibDB_Core;
 using MySql.Data.MySqlClient;
 
@@ -21,7 +22,7 @@ WHERE table_products.type_id = table_product_types.id AND table_products.supplie
 
             while (result.Read())
             {
-                products.Add( GetProduct(result));
+                products.Add(GetProduct(result));
             }
 
             return products;
@@ -139,12 +140,11 @@ WHERE table_products.product_quantity = (SELECT MAX(product_quantity) FROM table
         }
 
 
-        
         public Product GetProductMinQuantity()
         {
             // Показать товар с минимальным количеством
             Product product = new Product();
-            
+
             string request =
                 @"
 SELECT table_products.id,
@@ -160,9 +160,9 @@ FROM table_products,
 WHERE table_products.product_quantity = (SELECT MIN(product_quantity) FROM table_products)
   AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;";
-            
+
             MySqlDataReader result = GetAnswer(request);
-            
+
             while (result.Read())
             {
                 product = GetProduct(result);
@@ -175,7 +175,7 @@ WHERE table_products.product_quantity = (SELECT MIN(product_quantity) FROM table
         {
             // Показать товар с минимальной себестоимостью
             Product product = new Product();
-            
+
             string request =
                 @"
 SELECT table_products.id,
@@ -191,9 +191,9 @@ FROM table_products,
 WHERE table_products.product_cost = (SELECT MIN(product_cost) FROM table_products)
   AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;";
-            
+
             MySqlDataReader result = GetAnswer(request);
-            
+
             while (result.Read())
             {
                 product = GetProduct(result);
@@ -206,7 +206,7 @@ WHERE table_products.product_cost = (SELECT MIN(product_cost) FROM table_product
         {
             // Показать товар с максимальной себестоимостью
             Product product = new Product();
-            
+
             string request =
                 @"
 SELECT table_products.id,
@@ -222,9 +222,9 @@ FROM table_products,
 WHERE table_products.product_cost = (SELECT MAX(product_cost) FROM table_products)
   AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;";
-            
+
             MySqlDataReader result = GetAnswer(request);
-            
+
             while (result.Read())
             {
                 product = GetProduct(result);
@@ -232,8 +232,36 @@ WHERE table_products.product_cost = (SELECT MAX(product_cost) FROM table_product
 
             return product;
         }
-        
-        
-        
+
+        public List<Product> GetProuctFromType(int product_type)
+        {
+            // Показать товары, заданной категории
+            List<Product> products = new List<Product>();
+
+            string request =
+                @"
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id ";
+            request += $"\nAND table_products.type_id = {product_type};";
+
+            var result = GetAnswer(request);
+
+            while (result.Read())
+            {
+                products.Add(GetProduct(result));
+            }
+
+            return products;
+        }
     }
 }

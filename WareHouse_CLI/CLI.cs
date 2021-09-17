@@ -98,6 +98,12 @@ namespace WareHouse_CLI
             Console.WriteLine($"{productSupplier.Id} - {productSupplier.SupplierName}");
         }
 
+        public static int InputChoice(string msg = "")
+        {
+            Console.Write(msg);
+            return Convert.ToInt32(Console.ReadLine());
+        }
+
         public static void SayGoodBy()
         {
             // Сказать досвидания

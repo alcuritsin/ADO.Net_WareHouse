@@ -142,7 +142,7 @@ WHERE table_products.product_cost = (SELECT MAX(product_cost) FROM table_product
   AND table_products.supplier_id = table_product_suppliers.id;
 
 # Задание 4
-# Показать товары, заданной категории
+# Показать товары, заданной категории --done
 SELECT table_products.id,
        product_name,
        type_name,
