@@ -79,9 +79,7 @@ namespace WareHouse_CLI
 
         public static void ShowType(ProductType productType)
         {
-            Console.WriteLine("*** *** *** *** ***");
-            Console.WriteLine($"      id: {productType.Id}\n" +
-                              $"TypeName: {productType.TypeName}");
+            Console.WriteLine($"{productType.Id} - {productType.TypeName}");
         }
 
         public static void ShowSuppliers(List<ProductSupplier> productSuppliers)
@@ -97,9 +95,7 @@ namespace WareHouse_CLI
 
         public static void ShowSupplier(ProductSupplier productSupplier)
         {
-            Console.WriteLine("*** *** *** *** ***");
-            Console.WriteLine($"      id: {productSupplier.Id}\n" +
-                              $"TypeName: {productSupplier.SupplierName}");
+            Console.WriteLine($"{productSupplier.Id} - {productSupplier.SupplierName}");
         }
 
         public static void SayGoodBy()

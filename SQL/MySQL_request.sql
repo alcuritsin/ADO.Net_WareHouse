@@ -52,9 +52,17 @@ INSERT INTO host1323541_pd3.table_products (product_name, type_id, supplier_id, 
                                             date_delivery)
 VALUES ('Птичье Молоко', 2, 2, 35, 25.3, '2021-09-10');
 
-INSERT INTO host1323541_pd3.table_products (product_name, type_id, supplier_id, product_quantity, product_cost,
-                                            date_delivery)
+INSERT INTO host1323541_pd3.table_products
+(product_name, type_id, supplier_id, product_quantity, product_cost, date_delivery)
 VALUES ('Майонез', 1, 3, 20, 49.8, '2021-09-10');
+
+INSERT INTO host1323541_pd3.table_products
+(product_name, type_id, supplier_id, product_quantity, product_cost, date_delivery)
+VALUES ('Кефир', 1, 1, 30, 29.8, '2021-09-11');
+
+INSERT INTO host1323541_pd3.table_products
+(product_name, type_id, supplier_id, product_quantity, product_cost, date_delivery)
+VALUES ('Варенец', 1, 2, 15, 50.5, '2021-09-12');
 
 # Задание 3 --done
 # Отображение всей информации о товаре -done
@@ -74,48 +82,116 @@ SELECT id, suppliers_name
 FROM table_product_suppliers;
 
 # Показать товар с максимальным количеством --done
-SELECT MAX(product_quantity) as max
-FROM table_products;
-
-# Показать товар с максимальным количеством --done
-SELECT table_products.id, product_name, type_name, suppliers_name,
-       MAX(product_quantity) as product_quantity, product_cost, date_delivery
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
 FROM table_products,
      table_product_types,
      table_product_suppliers
-WHERE table_products.type_id = table_product_types.id
+WHERE table_products.product_quantity = (SELECT MAX(product_quantity) FROM table_products)
+  AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
 
 # Показать товар с минимальным количеством --done
-SELECT table_products.id, product_name, type_name, suppliers_name,
-       MIN(product_quantity) as product_quantity, product_cost, date_delivery
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
 FROM table_products,
      table_product_types,
      table_product_suppliers
-WHERE table_products.type_id = table_product_types.id
+WHERE table_products.product_quantity = (SELECT MIN(product_quantity) FROM table_products)
+  AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
 
 # Показать товар с минимальной себестоимостью --done
-SELECT table_products.id, product_name, type_name, suppliers_name,
-       product_quantity, MIN(product_cost) as product_cost, date_delivery
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
 FROM table_products,
      table_product_types,
      table_product_suppliers
-WHERE table_products.type_id = table_product_types.id
+WHERE table_products.product_cost = (SELECT MIN(product_cost) FROM table_products)
+  AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
 
 # Показать товар с максимальной себестоимостью --done
-SELECT table_products.id, product_name, type_name, suppliers_name,
-       product_quantity, MAX(product_cost) as product_cost, date_delivery
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.product_cost = (SELECT MAX(product_cost) FROM table_products)
+  AND table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id;
+
+# Задание 4
+# Показать товары, заданной категории
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
 FROM table_products,
      table_product_types,
      table_product_suppliers
 WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id
+  AND table_products.type_id = 1;
+
+# Показать товары, заданного поставщика
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id
+  AND table_products.supplier_id = 1;
+
+# Показать самый старый товар на складе
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.date_delivery = (SELECT MIN(date_delivery) FROM table_products)
+  AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
 
-
-
-
+# Показать среднее количество товаров по каждому типу товара
+SELECT t.type_name as type_name, AVG(p.product_quantity) as avg
+FROM table_products as p 
+INNER JOIN table_product_types t ON p.type_id = t.id
+GROUP BY p.type_id;
 
 /*
 SELECT login, last_name, first_name

@@ -114,11 +114,18 @@ FROM table_product_suppliers;";
 
             string request =
                 @"
-SELECT table_products.id, product_name, type_name, suppliers_name, MAX(product_quantity) as product_quantity, product_cost, date_delivery
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
 FROM table_products,
      table_product_types,
      table_product_suppliers
-WHERE table_products.type_id = table_product_types.id
+WHERE table_products.product_quantity = (SELECT MAX(product_quantity) FROM table_products)
+  AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;";
 
             MySqlDataReader result = GetAnswer(request);
@@ -140,12 +147,18 @@ WHERE table_products.type_id = table_product_types.id
             
             string request =
                 @"
-SELECT table_products.id, product_name, type_name, suppliers_name,
-       MIN(product_quantity) as product_quantity, product_cost, date_delivery
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
 FROM table_products,
      table_product_types,
      table_product_suppliers
-WHERE table_products.type_id = table_product_types.id
+WHERE table_products.product_quantity = (SELECT MIN(product_quantity) FROM table_products)
+  AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;";
             
             MySqlDataReader result = GetAnswer(request);
@@ -165,12 +178,18 @@ WHERE table_products.type_id = table_product_types.id
             
             string request =
                 @"
-SELECT table_products.id, product_name, type_name, suppliers_name,
-       product_quantity, MIN(product_cost) as product_cost, date_delivery
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
 FROM table_products,
      table_product_types,
      table_product_suppliers
-WHERE table_products.type_id = table_product_types.id
+WHERE table_products.product_cost = (SELECT MIN(product_cost) FROM table_products)
+  AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;";
             
             MySqlDataReader result = GetAnswer(request);
@@ -190,12 +209,18 @@ WHERE table_products.type_id = table_product_types.id
             
             string request =
                 @"
-SELECT table_products.id, product_name, type_name, suppliers_name,
-       product_quantity, MAX(product_cost) as product_cost, date_delivery
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
 FROM table_products,
      table_product_types,
      table_product_suppliers
-WHERE table_products.type_id = table_product_types.id
+WHERE table_products.product_cost = (SELECT MAX(product_cost) FROM table_products)
+  AND table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;";
             
             MySqlDataReader result = GetAnswer(request);
@@ -207,6 +232,8 @@ WHERE table_products.type_id = table_product_types.id
 
             return product;
         }
+        
+        
         
     }
 }
