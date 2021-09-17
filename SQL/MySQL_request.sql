@@ -1,4 +1,6 @@
-﻿CREATE TABLE table_product_types
+﻿# Задание 1 --done
+# Init DatdBase
+CREATE TABLE table_product_types
 (
     id        INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
     type_name VARCHAR(50) NOT NULL
@@ -23,6 +25,7 @@ CREATE TABLE table_products
     FOREIGN KEY (supplier_id) REFERENCES table_product_suppliers (id)
 );
 
+# Insert data in tables
 INSERT INTO host1323541_pd3.table_product_suppliers (suppliers_name)
 VALUES ('Село зелёное');
 
@@ -53,7 +56,8 @@ INSERT INTO host1323541_pd3.table_products (product_name, type_id, supplier_id, 
                                             date_delivery)
 VALUES ('Майонез', 1, 3, 20, 49.8, '2021-09-10');
 
-# Отображение всей информации о товаре
+# Задание 3
+# Отображение всей информации о товаре -done
 SELECT table_products.id, product_name, type_name, suppliers_name, product_quantity, product_cost, date_delivery
 FROM table_products,
      table_product_types,
@@ -61,25 +65,56 @@ FROM table_products,
 WHERE table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
 
-# Отображение всех типов товаров
+# Отображение всех типов товаров --done
 SELECT id, type_name
 FROM table_product_types;
 
-# Отображение всех поставщиков
+# Отображение всех поставщиков --done
 SELECT id, suppliers_name
 FROM table_product_suppliers;
 
-# Показать товар с максимальным количеством
+# Показать товар с максимальным количеством --done
 SELECT MAX(product_quantity) as max
 FROM table_products;
 
-# Показать товар с максимальным количеством
-SELECT table_products.id, product_name, type_name, suppliers_name, MAX(product_quantity) as product_quantity, product_cost, date_delivery
+# Показать товар с максимальным количеством --done
+SELECT table_products.id, product_name, type_name, suppliers_name,
+       MAX(product_quantity) as product_quantity, product_cost, date_delivery
 FROM table_products,
      table_product_types,
      table_product_suppliers
 WHERE table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id;
+
+# Показать товар с минимальным количеством
+SELECT table_products.id, product_name, type_name, suppliers_name,
+       MIN(product_quantity) as product_quantity, product_cost, date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id;
+
+# Показать товар с минимальной себестоимостью
+SELECT table_products.id, product_name, type_name, suppliers_name,
+       product_quantity, MIN(product_cost) as product_cost, date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id;
+
+# Показать товар с максимальной себестоимостью
+SELECT table_products.id, product_name, type_name, suppliers_name,
+       product_quantity, MAX(product_cost) as product_cost, date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id;
+
+
+
 
 
 /*

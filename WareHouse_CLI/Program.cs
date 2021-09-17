@@ -39,7 +39,7 @@ using WareHouse_CLI;
                 break;
             case "5": //  5. Показать товар с минимальным количеством
                 db.Open();
-                //CLI.ShowValue(db.GetMinEnergyValue(), "Минимальное значение колорийности: ");
+                CLI.ShowProduct(db.GetProductMinQuantity());
                 db.Close();
                 break;
             case "6": //  6. Показать товар с минимальной себестоимостью

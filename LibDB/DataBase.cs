@@ -21,28 +21,36 @@ WHERE table_products.type_id = table_product_types.id AND table_products.supplie
 
             while (result.Read())
             {
-                var id = result.GetInt32("id");
-                var rpoduct_name = result.GetString("product_name");
-                var type_name = result.GetString("type_name");
-                var suppliers_name = result.GetString("suppliers_name");
-                var product_quantity = result.GetDouble("product_quantity");
-                var product_cost = result.GetDouble("product_cost");
-                var date_delivery = result.GetDateTime("date_delivery");
-
-                products.Add(new Product
-                    {
-                        Id = id,
-                        ProductName = rpoduct_name,
-                        ProducType = type_name,
-                        ProducSupplier = suppliers_name,
-                        ProductQuantity = product_quantity,
-                        ProductCost = product_cost,
-                        DeliveryDate = date_delivery
-                    }
-                );
+                products.Add( GetProduct(result));
             }
 
             return products;
+        }
+
+
+        private Product GetProduct(MySqlDataReader answer)
+        {
+            // Из запроса формирует карточку товара
+            var id = answer.GetInt32("id");
+            var rpoduct_name = answer.GetString("product_name");
+            var type_name = answer.GetString("type_name");
+            var suppliers_name = answer.GetString("suppliers_name");
+            var product_quantity = answer.GetDouble("product_quantity");
+            var product_cost = answer.GetDouble("product_cost");
+            var date_delivery = answer.GetDateTime("date_delivery");
+
+            Product product = new Product
+            {
+                Id = id,
+                ProductName = rpoduct_name,
+                ProducType = type_name,
+                ProducSupplier = suppliers_name,
+                ProductQuantity = product_quantity,
+                ProductCost = product_cost,
+                DeliveryDate = date_delivery
+            };
+
+            return product;
         }
 
         public List<ProductType> GetTypes()
@@ -102,7 +110,7 @@ FROM table_product_suppliers;";
         public Product GetProductMaxQuantity()
         {
             // Показать товар с максимальным количеством
-            Product product =new Product();
+            Product product = new Product();
 
             string request =
                 @"
@@ -117,30 +125,37 @@ WHERE table_products.type_id = table_product_types.id
 
             while (result.Read())
             {
-                var id = result.GetInt32("id");
-                var rpoduct_name = result.GetString("product_name");
-                var type_name = result.GetString("type_name");
-                var suppliers_name = result.GetString("suppliers_name");
-                var product_quantity = result.GetDouble("product_quantity");
-                var product_cost = result.GetDouble("product_cost");
-                var date_delivery = result.GetDateTime("date_delivery");
-                
-                product  = new Product
-                {
-                    Id = id,
-                    ProductName = rpoduct_name,
-                    ProducType = type_name,
-                    ProducSupplier = suppliers_name,
-                    ProductQuantity = product_quantity,
-                    ProductCost = product_cost,
-                    DeliveryDate = date_delivery
-                };
+                product = GetProduct(result);
             }
-            
+
             return product;
         }
+
+
         
-        
-        
+        public Product GetProductMinQuantity()
+        {
+            // Показать товар с минимальным количеством
+            Product product = new Product();
+            
+            string request =
+                @"
+SELECT table_products.id, product_name, type_name, suppliers_name,
+       MIN(product_quantity) as product_quantity, product_cost, date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id;";
+            
+            MySqlDataReader result = GetAnswer(request);
+            
+            while (result.Read())
+            {
+                product = GetProduct(result);
+            }
+
+            return product;
+        }
     }
 }
