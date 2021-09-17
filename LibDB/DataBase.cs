@@ -263,5 +263,37 @@ WHERE table_products.type_id = table_product_types.id
 
             return products;
         }
+        public List<Product> GetProuctFromSupplier(int product_supplier)
+        {
+            // Показать товары, заданной категории
+            List<Product> products = new List<Product>();
+
+            string request =
+                @"
+SELECT table_products.id,
+       product_name,
+       type_name,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id ";
+            request += $"\nAND table_products.supplier_id = {product_supplier};";
+
+            var result = GetAnswer(request);
+
+            while (result.Read())
+            {
+                products.Add(GetProduct(result));
+            }
+
+            return products;
+        }
+        
+        
     }
 }

@@ -157,7 +157,7 @@ WHERE table_products.type_id = table_product_types.id
   AND table_products.supplier_id = table_product_suppliers.id
   AND table_products.type_id = 1;
 
-# Показать товары, заданного поставщика
+# Показать товары, заданного поставщика --done
 SELECT table_products.id,
        product_name,
        type_name,

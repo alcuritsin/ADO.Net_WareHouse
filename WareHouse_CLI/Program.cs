@@ -68,16 +68,29 @@ do
             menuLevel = "000";
             break;
         case "040_1": // 040_1 - Показать товары, заданной категории
-            
+
             db.Open();
             CLI.ShowTypes(db.GetTypes());
             db.Close();
-            
-            int type_id = CLI.InputChoice("Введите тип: ");
-            
+
+            int type_id = CLI.InputChoice("Введите тип (int): ");
+
             db.Open();
             CLI.ShowProducts(db.GetProuctFromType(type_id));
             db.Close();
+            break;
+
+        case "040_2": // 040_2 Показать товары, заданного поставщика
+            db.Open();
+            CLI.ShowSuppliers(db.GetSuppliers());
+            db.Close();
+            
+            int supplier_id = CLI.InputChoice("Введите поставщика (int): ");
+            
+            db.Open();
+            CLI.ShowProducts(db.GetProuctFromSupplier(supplier_id));
+            db.Close();
+            
             break;
         case "040_<": // 040_< - Назад
             menuLevel = "000";
