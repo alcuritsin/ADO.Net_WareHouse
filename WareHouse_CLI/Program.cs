@@ -23,7 +23,7 @@ using WareHouse_CLI;
 
             case "2": //  2. Отображение всех типов товаров
                 db.Open();
-                //CLI.ShowListValue(db.GetNameProduct(), "Наименование прдуктов:");
+                CLI.ShowTypes(db.GetTypes());
                 db.Close();
                 break;
 

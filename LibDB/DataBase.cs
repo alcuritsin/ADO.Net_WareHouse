@@ -11,9 +11,10 @@ namespace LibDB
             List<Product> products = new List<Product>();
 
             string request =
-                "SELECT table_products.id, product_name, type_name,suppliers_name,product_quantity,product_cost,date_delivery " +
-                "FROM table_products,table_product_types, table_product_suppliers " +
-                "WHERE table_products.type_id = table_product_types.id AND table_products.supplier_id = table_product_suppliers.id";
+                @"
+SELECT table_products.id, product_name, type_name,suppliers_name,product_quantity,product_cost,date_delivery
+FROM table_products,table_product_types, table_product_suppliers
+WHERE table_products.type_id = table_product_types.id AND table_products.supplier_id = table_product_suppliers.id;";
             _command.CommandText = request;
 
             var result = _command.ExecuteReader();
@@ -42,6 +43,34 @@ namespace LibDB
             }
 
             return products;
+        }
+
+        public List<ProductType> GetTypes()
+        {
+            // Отображение всех типов товаров
+            List<ProductType> types = new List<ProductType>();
+            string request =
+                @"
+SELECT id,type_name
+FROM table_product_types;";
+            _command.CommandText = request;
+
+            var result = _command.ExecuteReader();
+
+            while (result.Read())
+            {
+                var id = result.GetInt32("id");
+                var type_name = result.GetString("type_name");
+
+                types.Add(new ProductType
+                    {
+                        Id = id,
+                        TypeName = type_name
+                    }
+                );
+            }
+
+            return types;
         }
     }
 }

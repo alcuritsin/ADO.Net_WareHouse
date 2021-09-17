@@ -46,6 +46,22 @@ namespace WareHouse_CLI
                               $"Date delivery: {product.DeliveryDate}");
         }
 
+        public static void ShowTypes(List<ProductType> productTypes)
+        {
+            Console.WriteLine("Отображение всех типов товаров:");
+            foreach (ProductType productType in productTypes)
+            {
+                ShowType(productType);
+            }
+            Console.WriteLine("--- --- --- --- ---");
+        }
+        public static void ShowType(ProductType productType)
+        {
+            Console.WriteLine("*** *** *** *** ***");
+            Console.WriteLine($"      id: {productType.Id}\n" +
+                              $"TypeName: {productType.TypeName}");
+        }
+
         public static void SayGoodBy()
         {
             // Сказать досвидания

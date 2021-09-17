@@ -58,8 +58,9 @@ SELECT table_products.id, product_name, type_name,suppliers_name,product_quantit
 FROM table_products,table_product_types, table_product_suppliers
 WHERE table_products.type_id = table_product_types.id AND table_products.supplier_id = table_product_suppliers.id;
 
-
-
+# Отображение всех типов товаров
+SELECT id,type_name
+FROM table_product_types;
 
 /*
 SELECT login, last_name, first_name
