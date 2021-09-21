@@ -550,6 +550,21 @@ WHERE table_product_types.id = {productType.Id};";
 
         #endregion
 
+        #region Delete
+
+        public int DeleteProductById(int productId)
+        {
+            string sqlExpression =
+                $@"
+DELETE FROM table_products
+WHERE table_products.id = {productId};";
+
+            return NonQuery(sqlExpression);
+        }
+        
+
+        #endregion //Delete
+
         #region HelpMethods
 
         private static string DoubleToString(double value)

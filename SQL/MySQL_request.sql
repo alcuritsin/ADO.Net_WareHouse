@@ -263,3 +263,17 @@ WHERE table_product_types.id = 1;
 UPDATE table_product_types
 SET type_name = 'New ProductTypeName'
 WHERE table_product_types.id = 1;
+
+## Задание 3
+### Удаление товаров --done
+DELETE FROM table_products
+WHERE table_products.id = 1;
+
+### Удаление поставщиков
+DELETE FROM table_product_suppliers
+WHERE table_product_suppliers.id = 1;
+
+### Удаление типов товаров
+DELETE FROM table_product_types
+WHERE table_product_types.id = 1;
+

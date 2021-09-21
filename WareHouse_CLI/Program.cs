@@ -10,7 +10,7 @@ using WareHouse_CLI;
 
 var db = new DataBase();
 var exit = false;
-string menuLevel = "220";
+string menuLevel = "230";
 
 do
 {
@@ -192,6 +192,7 @@ do
         #region Menu 230
 
         case "230_1": // Удаление товаров
+            DeleteProduct();
             break;
         case "230_2": // Удаление поставщиков
             break;
@@ -508,4 +509,15 @@ void UpdateProductType()
     {
         CLI.ShowMessage("Изменения не внесены.");
     }
+}
+
+void DeleteProduct()
+{
+    // Удаление товаров
+    CLI.ShowMessage(": Удаление продукта :");
+    int prodictId = CLI.InputChoice("Введите ID продукта: ");
+    
+    db.Open();
+    CLI.ShowMessage($"Измененно {db.DeleteProductById(prodictId)} строк.");
+    db.Close();
 }
