@@ -195,6 +195,7 @@ do
             DeleteProduct();
             break;
         case "230_2": // Удаление поставщиков
+            DeleteProductSupplier();
             break;
         case "230_3": // Удаление типов товаров
             break;
@@ -519,5 +520,16 @@ void DeleteProduct()
     
     db.Open();
     CLI.ShowMessage($"Измененно {db.DeleteProductById(prodictId)} строк.");
+    db.Close();
+}
+
+void DeleteProductSupplier()
+{
+    // Удаление поставщиков
+    CLI.ShowMessage(": Удаление поставщика :");
+    int supplierId = CLI.InputChoice("Введите ID поставщика: ");
+    
+    db.Open();
+    CLI.ShowMessage($"Измененно {db.DeleteProductSupplierById(supplierId)} строк.");
     db.Close();
 }

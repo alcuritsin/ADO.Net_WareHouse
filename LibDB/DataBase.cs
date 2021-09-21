@@ -561,8 +561,16 @@ WHERE table_products.id = {productId};";
 
             return NonQuery(sqlExpression);
         }
-        
 
+        public int DeleteProductSupplierById(int supplierId)
+        {
+            string sqlExpression =
+                $@"
+DELETE FROM table_product_suppliers
+WHERE table_product_suppliers.id = {supplierId};";
+            
+            return NonQuery(sqlExpression);
+        }
         #endregion //Delete
 
         #region HelpMethods

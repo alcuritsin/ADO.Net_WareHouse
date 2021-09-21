@@ -269,7 +269,7 @@ WHERE table_product_types.id = 1;
 DELETE FROM table_products
 WHERE table_products.id = 1;
 
-### Удаление поставщиков
+### Удаление поставщиков --done
 DELETE FROM table_product_suppliers
 WHERE table_product_suppliers.id = 1;
 
