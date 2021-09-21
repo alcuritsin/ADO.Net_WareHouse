@@ -181,6 +181,7 @@ do
             UpdateProduct();
             break;
         case "220_2": // Обновление информации о существующих поставщиках
+            UpdateSupplier();
             break;
         case "220_3": // Обновление информации о существующих типах товаров
             break;
@@ -365,12 +366,12 @@ void UpdateProduct()
                 // Количество продукта
                 product.ProductQuantity = Convert.ToDouble(CLI.InputString("Введите новое количество (double coma): "));
                 break;
-            
+
             case "5":
                 // Себестоимость продукта
                 product.ProductCost = Convert.ToDouble(CLI.InputString("Введите новую себестоимость (double coma): "));
                 break;
-            
+
             case "6":
                 product.DeliveryDate = Convert.ToDateTime(CLI.InputString("Введите новую дату (dd.mm.yyyy): "));
                 break;
@@ -395,6 +396,61 @@ void UpdateProduct()
     }
     else
     {
-        CLI.ShowMessage("Изменения не внесены");
+        CLI.ShowMessage("Изменения не внесены.");
     }
-} 
+}
+
+void UpdateSupplier()
+{
+    // Обновление информации о существующих поставщиках
+    CLI.ShowMessage(":: Обновление информации о поставщике ::");
+    int supplierId = CLI.InputChoice("Введите ID поставщика: ");
+
+    db.Open();
+    ProductSupplier productSupplier = db.GetProductSupplierById(supplierId);
+    db.Close();
+
+    bool done = false;
+    bool update = false;
+
+    do
+    {
+        CLI.ShowMessage("Редактирование поставщика: ");
+        CLI.ShowSupplier(productSupplier);
+
+        CLI.ShowMenu("222");
+
+        string select = Console.ReadLine();
+
+        switch (select)
+        {
+            case "1":
+                // Новое наименование
+                productSupplier.SupplierName = CLI.InputString("Введите новое наименование поставщика: ");
+                break;
+            
+            case "+":
+                // Сохранить и выйти
+                update = true;
+                done = true;
+                break;
+            
+            case "-":
+                // Выход без сохранения
+                update = false;
+                done = true;
+                break;
+        }
+    } while (!done);
+
+    if (update)
+    {
+        db.Open();
+        CLI.ShowMessage($"Измененно {db.UpdateSupplier(productSupplier)} строк.");
+        db.Close();
+    }
+    else
+    {
+        CLI.ShowMessage("изменения не внесены.");
+    }
+}

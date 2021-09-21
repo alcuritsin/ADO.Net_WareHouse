@@ -428,6 +428,26 @@ WHERE table_products.type_id = table_product_types.id
             return product;
         }
 
+        public ProductSupplier GetProductSupplierById(int supplier_id)
+        {
+            string sqlExpression =
+                $@"
+SELECT table_product_suppliers.id, suppliers_name
+FROM table_product_suppliers
+WHERE table_product_suppliers.id = {supplier_id};";
+
+            MySqlDataReader answer = GetAnswer(sqlExpression);
+
+            ProductSupplier productSupplier = new ProductSupplier();
+
+            while (answer.Read())
+            {
+                productSupplier.Id = answer.GetInt32("id");
+                productSupplier.SupplierName = answer.GetString("suppliers_name");
+            }
+
+            return productSupplier;
+        }
         #endregion
 
         #region Insert
@@ -486,6 +506,16 @@ WHERE id = {product.Id};";
             return NonQuery(sqlExpression);
         }
 
+        public int UpdateSupplier(ProductSupplier productSupplier)
+        {
+            string sqlExpression =
+                $@"
+UPDATE table_product_suppliers
+SET suppliers_name = '{productSupplier.SupplierName}'
+WHERE table_product_suppliers.id = {productSupplier.Id};";
+            return NonQuery(sqlExpression);
+        }
+        
         #endregion
 
         #region HelpMethods

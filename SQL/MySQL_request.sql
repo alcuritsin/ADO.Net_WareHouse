@@ -246,6 +246,13 @@ SET product_name     = 'New Name',
     date_delivery    = 'New Date'
 WHERE id = 'ID Product';
 
-### Обновление информации о существующих поставщиках
+### Обновление информации о существующих поставщиках --done
+SELECT table_product_suppliers.id, suppliers_name
+FROM table_product_suppliers
+WHERE table_product_suppliers.id = 1;
+
+UPDATE table_product_suppliers
+SET suppliers_name = 'New SupplierName'
+WHERE table_product_suppliers.id = 1; 
 
 ### Обновление информации о существующих типах товаров
