@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using LibDB_Core;
 using MySql.Data.MySqlClient;
 
@@ -386,6 +387,47 @@ FROM table_product_suppliers " +
             return typeName;
         }
 
+        public Product GetProductById(int product_id)
+        {
+            // Прочитать из БД продукт по id
+            string sqlExpression =
+                $@"
+SELECT table_products.id,
+       product_name,
+       type_id,
+       type_name,
+       supplier_id,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id
+  AND table_products.id = {product_id};";
+
+            MySqlDataReader answer = GetAnswer(sqlExpression);
+
+            Product product = new Product();
+
+            while (answer.Read())
+            {
+                product.Id = answer.GetInt32("id");
+                product.ProductName = answer.GetString("product_name");
+                product.ProductTypeId = answer.GetInt32("type_id");
+                product.ProducType = answer.GetString("type_name");
+                product.ProductSupplierId = answer.GetInt32("supplier_id");
+                product.ProducSupplier = answer.GetString("suppliers_name");
+                product.ProductQuantity = answer.GetDouble("product_quantity");
+                product.ProductCost = answer.GetDouble("product_cost");
+                product.DeliveryDate = answer.GetDateTime("date_delivery");
+            }
+
+            return product;
+        }
+
         #endregion
 
         #region Insert
@@ -428,7 +470,25 @@ VALUE ('{productSupplier.SupplierName}');";
 
         #endregion
 
-        #region HelpNethods
+        #region Update
+
+        public int UpdateProduct(Product product)
+        {
+            string sqlExpression =
+                $@"
+UPDATE table_products
+SET product_name = '{product.ProductName}',
+    type_id = {product.ProductTypeId}, supplier_id = {product.ProductSupplierId},
+    product_quantity = {DoubleToString(product.ProductQuantity)}, product_cost = {DoubleToString(product.ProductCost)},
+    date_delivery = '{DateTimeToString(product.DeliveryDate)}'
+WHERE id = {product.Id};";
+
+            return NonQuery(sqlExpression);
+        }
+
+        #endregion
+
+        #region HelpMethods
 
         private static string DoubleToString(double value)
         {

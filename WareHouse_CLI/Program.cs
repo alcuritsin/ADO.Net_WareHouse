@@ -1,14 +1,16 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System;
+using System.ComponentModel.Design;
 using System.Globalization;
 using LibDB;
+using Org.BouncyCastle.Crypto.Tls;
 using WareHouse_CLI;
 
 
 var db = new DataBase();
 var exit = false;
-string menuLevel = "210";
+string menuLevel = "220";
 
 do
 {
@@ -176,6 +178,7 @@ do
         #region Menu 220
 
         case "220_1": // Обновление информации о существующих товарах
+            UpdateProduct();
             break;
         case "220_2": // Обновление информации о существующих поставщиках
             break;
@@ -301,3 +304,97 @@ void InsertNewSypplier()
     CLI.ShowSuppliers(db.GetSuppliers());
     db.Close();
 }
+
+void UpdateProduct()
+{
+    CLI.ShowMessage(":: Обновление информации о товаре ::");
+    int productId = CLI.InputChoice("Введите ID товара: ");
+
+    db.Open();
+    Product product = db.GetProductById(productId);
+    db.Close();
+
+    bool done = false;
+    bool update = false;
+
+    do
+    {
+        CLI.ShowMessage("Редактирование продукта:");
+        CLI.ShowProduct(product);
+
+        CLI.ShowMenu("221");
+
+        string select = Console.ReadLine();
+
+        switch (select)
+        {
+            case "1":
+                // Новое имя
+                product.ProductName = CLI.InputString("Введите новое имя: ");
+                break;
+
+            case "2":
+                // Новый тип продукта
+                db.Open();
+                CLI.ShowTypes(db.GetTypes());
+                db.Close();
+
+                product.ProductTypeId = CLI.InputChoice("Введите новый тип (int): ");
+
+                //  Меняем текстовое отображение типа в локальной пееменной
+                db.Open();
+                product.ProducType = db.GetTypeNameById(product.ProductTypeId);
+                db.Close();
+                break;
+
+            case "3":
+                // Новый поставщик
+                db.Open();
+                CLI.ShowSuppliers(db.GetSuppliers());
+                db.Close();
+
+                product.ProductSupplierId = CLI.InputChoice("Введите нового поставщика (int): ");
+
+                //  Меняем текстовое отображение поставщика в локальной пееменной
+                db.Open();
+                product.ProducSupplier = db.GetSupplierNameById(product.ProductSupplierId);
+                db.Close();
+                break;
+
+            case "4":
+                // Количество продукта
+                product.ProductQuantity = Convert.ToDouble(CLI.InputString("Введите новое количество (double coma): "));
+                break;
+            
+            case "5":
+                // Себестоимость продукта
+                product.ProductCost = Convert.ToDouble(CLI.InputString("Введите новую себестоимость (double coma): "));
+                break;
+            
+            case "6":
+                product.DeliveryDate = Convert.ToDateTime(CLI.InputString("Введите новую дату (dd.mm.yyyy): "));
+                break;
+            case "+":
+                // Сохранить и выйти
+                update = true;
+                done = true;
+                break;
+            case "-":
+                // Выход без сохранения
+                update = false;
+                done = true;
+                break;
+        }
+    } while (!done);
+
+    if (update)
+    {
+        db.Open();
+        CLI.ShowMessage($"Изменено {db.UpdateProduct(product)} строк.");
+        db.Close();
+    }
+    else
+    {
+        CLI.ShowMessage("Изменения не внесены");
+    }
+} 

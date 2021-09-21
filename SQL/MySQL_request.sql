@@ -189,12 +189,12 @@ WHERE table_products.date_delivery = (SELECT MIN(date_delivery) FROM table_produ
 
 ### Показать среднее количество товаров по каждому типу товара --done
 SELECT t.type_name as type_name, AVG(p.product_quantity) as avg
-FROM table_products as p 
-INNER JOIN table_product_types t ON p.type_id = t.id
+FROM table_products as p
+         INNER JOIN table_product_types t ON p.type_id = t.id
 GROUP BY p.type_id;
 
 # Модуль 2
-## Задание 1
+## Задание 1 --done
 ### Вставка новых товаров --done
 SELECT type_name
 FROM table_product_types
@@ -204,15 +204,48 @@ SELECT suppliers_name
 FROM table_product_suppliers
 WHERE id = 1;
 
-INSERT INTO host1323541_pd3.table_products
-(product_name, type_id, supplier_id, product_quantity, product_cost, date_delivery) VALUES ('Варенец', 1, 1, 5, 50,5, '20.09.2021 0:00:00');
+INSERT INTO table_products
+(product_name, type_id, supplier_id, product_quantity, product_cost, date_delivery)
+VALUES ('Варенец', 1, 1, 5, 50, 5, '20.09.2021 0:00:00');
 
 ### Вставка новых типов товаров --done
 INSERT INTO table_product_types
-(type_name)
-VALUE ('New TypeName');
+    (type_name)
+    VALUE ('New TypeName');
 
 ### Вставка новых поставщиков --done
 INSERT INTO table_product_suppliers
-(suppliers_name)
-VALUE ('New supplier');
+    (suppliers_name)
+    VALUE ('New supplier');
+
+## Задание 2
+### Обновление информации о существующих товарах
+#### Показать товар по ID --done
+SELECT table_products.id,
+       product_name,
+       type_id,
+       type_name,
+       supplier_id,
+       suppliers_name,
+       product_quantity,
+       product_cost,
+       date_delivery
+FROM table_products,
+     table_product_types,
+     table_product_suppliers
+WHERE table_products.type_id = table_product_types.id
+  AND table_products.supplier_id = table_product_suppliers.id
+  AND table_products.id = 1;
+
+UPDATE table_products
+SET product_name     = 'New Name',
+    type_id          = 'New TypeId',
+    supplier_id      = 'New SypplierId',
+    product_quantity = 'New Quantity',
+    product_cost     = 'New Cost',
+    date_delivery    = 'New Date'
+WHERE id = 'ID Product';
+
+### Обновление информации о существующих поставщиках
+
+### Обновление информации о существующих типах товаров
