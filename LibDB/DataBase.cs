@@ -571,6 +571,15 @@ WHERE table_product_suppliers.id = {supplierId};";
             
             return NonQuery(sqlExpression);
         }
+        public int DeleteProductTypeById(int typeId)
+        {
+            string sqlExpression =
+                $@"
+DELETE FROM table_product_types
+WHERE table_product_types.id = {typeId};";
+            
+            return NonQuery(sqlExpression);
+        }
         #endregion //Delete
 
         #region HelpMethods
