@@ -263,6 +263,7 @@ WHERE table_products.type_id = table_product_types.id
 
             return products;
         }
+
         public List<Product> GetProuctFromSupplier(int product_supplier)
         {
             // Показать товары, заданного поставщика
@@ -297,7 +298,7 @@ WHERE table_products.type_id = table_product_types.id
         public Product GetProductOld()
         {
             // Показать самый старый товар на складе
-            
+
             Product product = new Product();
 
             string request =
@@ -324,13 +325,12 @@ WHERE table_products.date_delivery = (SELECT MIN(date_delivery) FROM table_produ
             }
 
             return product;
-
         }
 
         public List<List<string>> GetProductAvgQuantity()
         {
             List<List<string>> tupes = new List<List<string>>();
-            
+
             string request =
                 @"
 SELECT t.type_name as type_name, AVG(p.product_quantity) as avg
@@ -339,7 +339,7 @@ INNER JOIN table_product_types t ON p.type_id = t.id
 GROUP BY p.type_id;";
 
             var result = GetAnswer(request);
-            
+
             while (result.Read())
             {
                 List<string> item = new List<string>()
@@ -352,6 +352,65 @@ GROUP BY p.type_id;";
 
             return tupes;
         }
-        
+
+        public int InsertNewProduct(Product product)
+        {
+            string request =
+                @"
+INSERT INTO host1323541_pd3.table_products
+(product_name, type_id, supplier_id, product_quantity, product_cost, date_delivery) " +
+                $"VALUES ('{product.ProductName}', {product.ProductTypeId}, {product.ProductSupplierId}, {DoubleToString(product.ProductQuantity)}, {DoubleToString(product.ProductCost)}, '{DateTimeToString(product.DeliveryDate)}');";
+
+            Console.WriteLine(request);
+            Console.ReadKey();
+
+            return NonQuery(request);
+
+            // Если результат 1, то всё ок. Добавлена одна строка (кортеж).
+            // Пока никак не обрабатываем.
+        }
+
+        public string GetTypeNameById(int id)
+        {
+            string typeName = "";
+            string sqlExpression = @"
+SELECT type_name
+FROM table_product_types " + $"WHERE id = {id};";
+            MySqlDataReader result = GetAnswer(sqlExpression);
+
+            while (result.Read())
+            {
+                typeName = result.GetString("type_name");
+            }
+
+            return typeName;
+        }
+
+        public string GetSupplierNameById(int id)
+        {
+            string typeName = "";
+            string sqlExpression = @"
+SELECT suppliers_name
+FROM table_product_suppliers " +
+                                   $"WHERE id = {id};";
+            MySqlDataReader result = GetAnswer(sqlExpression);
+
+            while (result.Read())
+            {
+                typeName = result.GetString("suppliers_name");
+            }
+
+            return typeName;
+        }
+
+        private static string DoubleToString(double value)
+        {
+            return value.ToString().Replace(",", ".");
+        }
+
+        private static string DateTimeToString(DateTime dateTime)
+        {
+            return $"{dateTime.Year.ToString()}-{dateTime.Month.ToString()}-{dateTime.Day.ToString()}";
+        }
     }
 }

@@ -1,13 +1,14 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System;
+using System.Globalization;
 using LibDB;
 using WareHouse_CLI;
 
 
 var db = new DataBase();
 var exit = false;
-string menuLevel = "000";
+string menuLevel = "210";
 
 do
 {
@@ -142,7 +143,7 @@ do
 
         #region Munu 200 // Модуль 2. Присоединенный режим.
 
-        case "200_1":
+        case "200_1": 
             menuLevel = "210";
             break;
         case "200_2":
@@ -161,6 +162,7 @@ do
         #region Menu 210
 
         case "210_1": // Вставка новых товаров
+            InsertNewProduct();
             break;
         case "210_2": // Вставка новых типов товаров
             break;
@@ -224,3 +226,39 @@ do
 } while (!exit);
 
 CLI.SayGoodBy();
+
+void InsertNewProduct()
+{
+    Product product = new Product();
+            
+    CLI.ShowMessage(":: Добавить новый продукт в БД ::");
+    product.ProductName = CLI.InputString("Введите наименование: ");
+    
+    CLI.ShowMessage("Выбор типа продукта...");
+    db.Open();
+    CLI.ShowTypes(db.GetTypes());
+    db.Close();
+    product.ProductTypeId = CLI.InputChoice("Тип продукта (int): ");
+    db.Open();
+    product.ProducType = db.GetTypeNameById(product.ProductTypeId);
+    db.Close();
+    
+    CLI.ShowMessage("Выбор поставщика...");
+    db.Open();
+    CLI.ShowSuppliers(db.GetSuppliers());
+    db.Close();
+    product.ProductSupplierId = CLI.InputChoice("Поставщик продукта (int): ");
+    db.Open();
+    product.ProducSupplier = db.GetSupplierNameById(product.ProductSupplierId);
+    db.Close();
+
+    product.ProductQuantity = Convert.ToDouble(CLI.InputString("Введите количество (double coma): "));
+    product.ProductCost = Convert.ToDouble(CLI.InputString("Введите себестоимость (double coma): "));
+
+    product.DeliveryDate = Convert.ToDateTime(CLI.InputString("Введите дату поставки (dd.mm.yyyy): "));
+
+    db.Open();
+    CLI.ShowMessage($"Добавлено {db.InsertNewProduct(product)} строк.");
+    db.Close();
+    
+}

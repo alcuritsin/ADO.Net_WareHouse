@@ -143,6 +143,12 @@ namespace WareHouse_CLI
             return Convert.ToInt32(Console.ReadLine());
         }
 
+        public static string InputString(string msg = "")
+        {
+            Console.Write(msg);
+            return Console.ReadLine();
+        }
+
         public static void OutTabl(List<List<string>> tabl)
         {
             foreach (List<string> list in tabl)
@@ -153,6 +159,11 @@ namespace WareHouse_CLI
                 }
                 Console.WriteLine();
             }
+        }
+
+        public static void ShowMessage(string msg)
+        {
+            Console.WriteLine(msg);
         }
         public static void SayGoodBy()
         {
