@@ -414,7 +414,18 @@ INSERT INTO table_product_types
 VALUE ('{productType.TypeName}');";
             return NonQuery(sqlExpression);
         }
-        
+
+        public int InsertNewSupplier(ProductSupplier productSupplier)
+        {
+            // Вставка новых поставщиков
+            string sqlExpression =
+                $@"
+INSERT INTO table_product_suppliers
+(suppliers_name)
+VALUE ('{productSupplier.SupplierName}');";
+            return NonQuery(sqlExpression);
+        }
+
         #endregion
 
         #region HelpNethods

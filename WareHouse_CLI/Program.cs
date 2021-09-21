@@ -143,7 +143,7 @@ do
 
         #region Munu 200 // Модуль 2. Присоединенный режим.
 
-        case "200_1": 
+        case "200_1":
             menuLevel = "210";
             break;
         case "200_2":
@@ -168,23 +168,24 @@ do
             InsertNewType();
             break;
         case "210_3": // Вставка новых поставщиков
+            InsertNewSypplier();
             break;
 
         #endregion // 210
 
         #region Menu 220
-        
+
         case "220_1": // Обновление информации о существующих товарах
             break;
         case "220_2": // Обновление информации о существующих поставщиках
             break;
         case "220_3": // Обновление информации о существующих типах товаров
             break;
-        
+
         #endregion // 220
 
         #region Menu 230
-        
+
         case "230_1": // Удаление товаров
             break;
         case "230_2": // Удаление поставщиков
@@ -195,7 +196,7 @@ do
         #endregion // 230
 
         #region Menu 240
-        
+
         case "240_1": // Показать информацию о поставщике с наибольшим количеством товаров на складе
             break;
         case "240_2": // Показать информацию о поставщике с наименьшим количеством товаров на складе
@@ -232,10 +233,10 @@ void InsertNewProduct()
 {
     // Вставка новых товаров
     Product product = new Product();
-            
+
     CLI.ShowMessage(":: Добавить новый продукт в БД ::");
     product.ProductName = CLI.InputString("Введите наименование: ");
-    
+
     CLI.ShowMessage("Выбор типа продукта...");
     db.Open();
     CLI.ShowTypes(db.GetTypes());
@@ -244,7 +245,7 @@ void InsertNewProduct()
     db.Open();
     product.ProducType = db.GetTypeNameById(product.ProductTypeId);
     db.Close();
-    
+
     CLI.ShowMessage("Выбор поставщика...");
     db.Open();
     CLI.ShowSuppliers(db.GetSuppliers());
@@ -262,7 +263,7 @@ void InsertNewProduct()
     db.Open();
     CLI.ShowMessage($"Добавлено {db.InsertNewProduct(product)} строк.");
     db.Close();
-    
+
     db.Open();
     CLI.ShowProducts(db.GetProducts());
     db.Close();
@@ -272,15 +273,31 @@ void InsertNewType()
 {
     // Вставка новых типов товаров
     ProductType productType = new ProductType();
-    
+
     CLI.ShowMessage(":: Добавить новый тип продукта в БД ::");
-    productType.TypeName = CLI.InputString("Введите наименование: ");
-    
+    productType.TypeName = CLI.InputString("Введите наименование типа: ");
+
     db.Open();
     CLI.ShowMessage($"Добавлено {db.InsertNewProductType(productType)} строк.");
     db.Close();
-    
+
     db.Open();
     CLI.ShowTypes(db.GetTypes());
+    db.Close();
+}
+
+void InsertNewSypplier()
+{
+    // Вставка новых поставщиков
+    ProductSupplier productSupplier = new ProductSupplier();
+    CLI.ShowMessage(":: Добавить нового поставщика продуктов в БД ::");
+    productSupplier.SupplierName = CLI.InputString("Введите наименование поставщика: ");
+
+    db.Open();
+    CLI.ShowMessage($"Добавлено {db.InsertNewSupplier(productSupplier)} строк.");
+    db.Close();
+
+    db.Open();
+    CLI.ShowSuppliers(db.GetSuppliers());
     db.Close();
 }

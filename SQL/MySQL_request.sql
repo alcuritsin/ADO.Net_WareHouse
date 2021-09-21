@@ -212,3 +212,7 @@ INSERT INTO table_product_types
 (type_name)
 VALUE ('New TypeName');
 
+### Вставка новых поставщиков --done
+INSERT INTO table_product_suppliers
+(suppliers_name)
+VALUE ('New supplier');
