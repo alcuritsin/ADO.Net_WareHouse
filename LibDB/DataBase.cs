@@ -448,6 +448,28 @@ WHERE table_product_suppliers.id = {supplier_id};";
 
             return productSupplier;
         }
+
+        public ProductType GetProductTypeById(int type_id)
+        {
+            string sqlExpression =
+                $@"
+SELECT table_product_types.id, type_name
+FROM table_product_types
+WHERE table_product_types.id = {type_id};";
+
+            MySqlDataReader answer = GetAnswer(sqlExpression);
+
+            ProductType productType = new ProductType();
+
+            while (answer.Read())
+            {
+                productType.Id = answer.GetInt32("id");
+                productType.TypeName = answer.GetString("type_name");
+            }
+
+            return productType;
+        }
+
         #endregion
 
         #region Insert
@@ -506,7 +528,7 @@ WHERE id = {product.Id};";
             return NonQuery(sqlExpression);
         }
 
-        public int UpdateSupplier(ProductSupplier productSupplier)
+        public int UpdateProductSupplier(ProductSupplier productSupplier)
         {
             string sqlExpression =
                 $@"
@@ -515,7 +537,17 @@ SET suppliers_name = '{productSupplier.SupplierName}'
 WHERE table_product_suppliers.id = {productSupplier.Id};";
             return NonQuery(sqlExpression);
         }
-        
+
+        public int UpdateProductType(ProductType productType)
+        {
+            string sqlExpression =
+                $@"
+UPDATE table_product_types
+SET type_name = '{productType.TypeName}'
+WHERE table_product_types.id = {productType.Id};";
+            return NonQuery(sqlExpression);
+        }
+
         #endregion
 
         #region HelpMethods

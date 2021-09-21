@@ -181,9 +181,10 @@ do
             UpdateProduct();
             break;
         case "220_2": // Обновление информации о существующих поставщиках
-            UpdateSupplier();
+            UpdateProductSupplier();
             break;
         case "220_3": // Обновление информации о существующих типах товаров
+            UpdateProductType();
             break;
 
         #endregion // 220
@@ -400,7 +401,7 @@ void UpdateProduct()
     }
 }
 
-void UpdateSupplier()
+void UpdateProductSupplier()
 {
     // Обновление информации о существующих поставщиках
     CLI.ShowMessage(":: Обновление информации о поставщике ::");
@@ -446,11 +447,65 @@ void UpdateSupplier()
     if (update)
     {
         db.Open();
-        CLI.ShowMessage($"Измененно {db.UpdateSupplier(productSupplier)} строк.");
+        CLI.ShowMessage($"Измененно {db.UpdateProductSupplier(productSupplier)} строк.");
         db.Close();
     }
     else
     {
-        CLI.ShowMessage("изменения не внесены.");
+        CLI.ShowMessage("Изменения не внесены.");
+    }
+}
+void UpdateProductType()
+{
+    // Обновление информации о существующих типах товаров
+    CLI.ShowMessage(":: Обновление информации о типах продуктов ::");
+    int typeId = CLI.InputChoice("Введите ID типа продукта: ");
+
+    db.Open();
+    ProductType productType = db.GetProductTypeById(typeId);
+    db.Close();
+
+    bool done = false;
+    bool update = false;
+
+    do
+    {
+        CLI.ShowMessage("Редактирование типа продукта: ");
+        CLI.ShowType(productType);
+
+        CLI.ShowMenu("222");
+
+        string select = Console.ReadLine();
+
+        switch (select)
+        {
+            case "1":
+                // Новое наименование
+                productType.TypeName = CLI.InputString("Введите новое наименование поставщика: ");
+                break;
+            
+            case "+":
+                // Сохранить и выйти
+                update = true;
+                done = true;
+                break;
+            
+            case "-":
+                // Выход без сохранения
+                update = false;
+                done = true;
+                break;
+        }
+    } while (!done);
+
+    if (update)
+    {
+        db.Open();
+        CLI.ShowMessage($"Измененно {db.UpdateProductType(productType)} строк.");
+        db.Close();
+    }
+    else
+    {
+        CLI.ShowMessage("Изменения не внесены.");
     }
 }

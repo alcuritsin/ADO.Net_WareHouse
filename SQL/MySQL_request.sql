@@ -255,4 +255,11 @@ UPDATE table_product_suppliers
 SET suppliers_name = 'New SupplierName'
 WHERE table_product_suppliers.id = 1; 
 
-### Обновление информации о существующих типах товаров
+### Обновление информации о существующих типах товаров --done
+SELECT table_product_types.id, type_name
+FROM table_product_types
+WHERE table_product_types.id = 1;
+
+UPDATE table_product_types
+SET type_name = 'New ProductTypeName'
+WHERE table_product_types.id = 1;
