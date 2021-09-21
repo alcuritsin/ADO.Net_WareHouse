@@ -165,6 +165,7 @@ do
             InsertNewProduct();
             break;
         case "210_2": // Вставка новых типов товаров
+            InsertNewType();
             break;
         case "210_3": // Вставка новых поставщиков
             break;
@@ -229,6 +230,7 @@ CLI.SayGoodBy();
 
 void InsertNewProduct()
 {
+    // Вставка новых товаров
     Product product = new Product();
             
     CLI.ShowMessage(":: Добавить новый продукт в БД ::");
@@ -261,4 +263,24 @@ void InsertNewProduct()
     CLI.ShowMessage($"Добавлено {db.InsertNewProduct(product)} строк.");
     db.Close();
     
+    db.Open();
+    CLI.ShowProducts(db.GetProducts());
+    db.Close();
+}
+
+void InsertNewType()
+{
+    // Вставка новых типов товаров
+    ProductType productType = new ProductType();
+    
+    CLI.ShowMessage(":: Добавить новый тип продукта в БД ::");
+    productType.TypeName = CLI.InputString("Введите наименование: ");
+    
+    db.Open();
+    CLI.ShowMessage($"Добавлено {db.InsertNewProductType(productType)} строк.");
+    db.Close();
+    
+    db.Open();
+    CLI.ShowTypes(db.GetTypes());
+    db.Close();
 }

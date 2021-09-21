@@ -7,6 +7,8 @@ namespace LibDB
 {
     public class DataBase : DB_connect
     {
+        #region Get
+
         public List<Product> GetProducts()
         {
             // Отображение всей информации о товаре
@@ -27,7 +29,6 @@ WHERE table_products.type_id = table_product_types.id AND table_products.supplie
 
             return products;
         }
-
 
         private Product GetProduct(MySqlDataReader answer)
         {
@@ -138,7 +139,6 @@ WHERE table_products.product_quantity = (SELECT MAX(product_quantity) FROM table
 
             return product;
         }
-
 
         public Product GetProductMinQuantity()
         {
@@ -353,23 +353,6 @@ GROUP BY p.type_id;";
             return tupes;
         }
 
-        public int InsertNewProduct(Product product)
-        {
-            string request =
-                @"
-INSERT INTO host1323541_pd3.table_products
-(product_name, type_id, supplier_id, product_quantity, product_cost, date_delivery) " +
-                $"VALUES ('{product.ProductName}', {product.ProductTypeId}, {product.ProductSupplierId}, {DoubleToString(product.ProductQuantity)}, {DoubleToString(product.ProductCost)}, '{DateTimeToString(product.DeliveryDate)}');";
-
-            Console.WriteLine(request);
-            Console.ReadKey();
-
-            return NonQuery(request);
-
-            // Если результат 1, то всё ок. Добавлена одна строка (кортеж).
-            // Пока никак не обрабатываем.
-        }
-
         public string GetTypeNameById(int id)
         {
             string typeName = "";
@@ -403,6 +386,39 @@ FROM table_product_suppliers " +
             return typeName;
         }
 
+        #endregion
+
+        #region Insert
+
+        public int InsertNewProduct(Product product)
+        {
+            // Вставка новых товаров
+            string request =
+                @"
+INSERT INTO host1323541_pd3.table_products
+(product_name, type_id, supplier_id, product_quantity, product_cost, date_delivery) " +
+                $"VALUES ('{product.ProductName}', {product.ProductTypeId}, {product.ProductSupplierId}, {DoubleToString(product.ProductQuantity)}, {DoubleToString(product.ProductCost)}, '{DateTimeToString(product.DeliveryDate)}');";
+
+            return NonQuery(request);
+
+            // Если результат 1, то всё ок. Добавлена одна строка (кортеж).
+        }
+
+        public int InsertNewProductType(ProductType productType)
+        {
+            // Вставка новых типов товаров
+            string sqlExpression =
+                $@"
+INSERT INTO table_product_types
+(type_name)
+VALUE ('{productType.TypeName}');";
+            return NonQuery(sqlExpression);
+        }
+        
+        #endregion
+
+        #region HelpNethods
+
         private static string DoubleToString(double value)
         {
             return value.ToString().Replace(",", ".");
@@ -412,5 +428,7 @@ FROM table_product_suppliers " +
         {
             return $"{dateTime.Year.ToString()}-{dateTime.Month.ToString()}-{dateTime.Day.ToString()}";
         }
+
+        #endregion
     }
 }

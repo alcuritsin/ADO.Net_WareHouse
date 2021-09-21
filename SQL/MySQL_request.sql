@@ -195,6 +195,7 @@ GROUP BY p.type_id;
 
 # Модуль 2
 ## Задание 1
+### Вставка новых товаров --done
 SELECT type_name
 FROM table_product_types
 WHERE id = 1;
@@ -205,3 +206,9 @@ WHERE id = 1;
 
 INSERT INTO host1323541_pd3.table_products
 (product_name, type_id, supplier_id, product_quantity, product_cost, date_delivery) VALUES ('Варенец', 1, 1, 5, 50,5, '20.09.2021 0:00:00');
+
+### Вставка новых типов товаров --done
+INSERT INTO table_product_types
+(type_name)
+VALUE ('New TypeName');
+
