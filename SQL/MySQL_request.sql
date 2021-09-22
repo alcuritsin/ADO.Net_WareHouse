@@ -319,6 +319,24 @@ WHERE
 AND table_product_suppliers.id = t_sum_quantity.supplier_id;
 
 ### Показать информацию о поставщике с наименьшим количеством товаров на складе
+SELECT
+    t_sum_quantity.supplier_id, table_product_suppliers.suppliers_name, t_sum_quantity.SumQuantity
+FROM
+    (SELECT DISTINCT supplier_id,
+                     (SELECT SUM(product_quantity)
+                      FROM table_products AS t_sub_products
+                      WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
+     FROM table_products AS t_products) AS t_sum_quantity,
+    table_product_suppliers
+WHERE
+        t_sum_quantity.SumQuantity = (SELECT MIN(t_sub_sum_quantity.SumQuantity)
+                                      FROM (SELECT DISTINCT supplier_id,
+                                                            (SELECT SUM(product_quantity)
+                                                             FROM table_products AS t_sub_products
+                                                             WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
+                                            FROM table_products AS t_products) AS t_sub_sum_quantity)
+  AND table_product_suppliers.id = t_sum_quantity.supplier_id;
+
 ### Показать информацию о типе товаров с наибольшим количеством товаров на складе
 ### Показать информацию о типе товаров с наименьшим количеством товаров на складе
 ### Показать товары с поставки, которых прошло заданное количество дней
