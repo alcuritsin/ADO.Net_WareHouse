@@ -253,7 +253,7 @@ WHERE table_product_suppliers.id = 1;
 
 UPDATE table_product_suppliers
 SET suppliers_name = 'New SupplierName'
-WHERE table_product_suppliers.id = 1; 
+WHERE table_product_suppliers.id = 1;
 
 ### Обновление информации о существующих типах товаров --done
 SELECT table_product_types.id, type_name
@@ -266,13 +266,59 @@ WHERE table_product_types.id = 1;
 
 ## Задание 3 --done
 ### Удаление товаров --done
-DELETE FROM table_products
+DELETE
+FROM table_products
 WHERE table_products.id = 1;
 
 ### Удаление поставщиков --done
-DELETE FROM table_product_suppliers
+DELETE
+FROM table_product_suppliers
 WHERE table_product_suppliers.id = 1;
 
 ### Удаление типов товаров --done
-DELETE FROM table_product_types
+DELETE
+FROM table_product_types
 WHERE table_product_types.id = 1;
+
+## Задание 4
+### Показать информацию о поставщике с наибольшим количеством товаров на складе
+#### Узнать количество товаров каждого поставщика на складе.
+#### Запрос на получение списка поставщик - сумма товара поставщика на складе
+SELECT DISTINCT supplier_id,
+                (SELECT SUM(product_quantity)
+                 FROM table_products AS t_sub_products
+                 WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
+FROM table_products AS t_products;
+
+#### Найти наибольшее значение в количестве товаров постащика на складе
+#### Запрос на получение максимального значения суммы товаров поставщика на складе
+SELECT MAX(t_sub_sum_quantity.SumQuantity)
+FROM (SELECT DISTINCT supplier_id,
+                      (SELECT SUM(product_quantity)
+                       FROM table_products AS t_sub_products
+                       WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
+      FROM table_products AS t_products) AS t_sub_sum_quantity;
+
+#### Конечный вариант запроса для получения списка поставщик - максимальное количество товара поставщика на складе.
+SELECT
+       t_sum_quantity.supplier_id, table_product_suppliers.suppliers_name, t_sum_quantity.SumQuantity
+FROM 
+     (SELECT DISTINCT supplier_id,
+                      (SELECT SUM(product_quantity)
+                       FROM table_products AS t_sub_products
+                       WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
+      FROM table_products AS t_products) AS t_sum_quantity,
+     table_product_suppliers
+WHERE
+      t_sum_quantity.SumQuantity = (SELECT MAX(t_sub_sum_quantity.SumQuantity)
+                                    FROM (SELECT DISTINCT supplier_id,
+                                                          (SELECT SUM(product_quantity)
+                                                           FROM table_products AS t_sub_products
+                                                           WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
+                                          FROM table_products AS t_products) AS t_sub_sum_quantity)
+AND table_product_suppliers.id = t_sum_quantity.supplier_id;
+
+### Показать информацию о поставщике с наименьшим количеством товаров на складе
+### Показать информацию о типе товаров с наибольшим количеством товаров на складе
+### Показать информацию о типе товаров с наименьшим количеством товаров на складе
+### Показать товары с поставки, которых прошло заданное количество дней
