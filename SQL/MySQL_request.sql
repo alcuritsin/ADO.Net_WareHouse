@@ -300,41 +300,39 @@ FROM (SELECT DISTINCT supplier_id,
       FROM table_products AS t_products) AS t_sub_sum_quantity;
 
 #### Конечный вариант запроса для получения списка поставщик - максимальное количество товара поставщика на складе.
-SELECT
-       t_sum_quantity.supplier_id, table_product_suppliers.suppliers_name, t_sum_quantity.SumQuantity
-FROM 
-     (SELECT DISTINCT supplier_id,
+SELECT t_sum_quantity.supplier_id,
+       table_product_suppliers.suppliers_name,
+       t_sum_quantity.SumQuantity
+FROM (SELECT DISTINCT supplier_id,
                       (SELECT SUM(product_quantity)
                        FROM table_products AS t_sub_products
                        WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
       FROM table_products AS t_products) AS t_sum_quantity,
      table_product_suppliers
-WHERE
-      t_sum_quantity.SumQuantity = (SELECT MAX(t_sub_sum_quantity.SumQuantity)
+WHERE t_sum_quantity.SumQuantity = (SELECT MAX(t_sub_sum_quantity.SumQuantity)
                                     FROM (SELECT DISTINCT supplier_id,
                                                           (SELECT SUM(product_quantity)
                                                            FROM table_products AS t_sub_products
                                                            WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
                                           FROM table_products AS t_products) AS t_sub_sum_quantity)
-AND table_product_suppliers.id = t_sum_quantity.supplier_id;
+  AND table_product_suppliers.id = t_sum_quantity.supplier_id;
 
 ### Показать информацию о поставщике с наименьшим количеством товаров на складе
-SELECT
-    t_sum_quantity.supplier_id, table_product_suppliers.suppliers_name, t_sum_quantity.SumQuantity
-FROM
-    (SELECT DISTINCT supplier_id,
-                     (SELECT SUM(product_quantity)
-                      FROM table_products AS t_sub_products
-                      WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
-     FROM table_products AS t_products) AS t_sum_quantity,
-    table_product_suppliers
-WHERE
-        t_sum_quantity.SumQuantity = (SELECT MIN(t_sub_sum_quantity.SumQuantity)
-                                      FROM (SELECT DISTINCT supplier_id,
-                                                            (SELECT SUM(product_quantity)
-                                                             FROM table_products AS t_sub_products
-                                                             WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
-                                            FROM table_products AS t_products) AS t_sub_sum_quantity)
+SELECT t_sum_quantity.supplier_id,
+       table_product_suppliers.suppliers_name,
+       t_sum_quantity.SumQuantity
+FROM (SELECT DISTINCT supplier_id,
+                      (SELECT SUM(product_quantity)
+                       FROM table_products AS t_sub_products
+                       WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
+      FROM table_products AS t_products) AS t_sum_quantity,
+     table_product_suppliers
+WHERE t_sum_quantity.SumQuantity = (SELECT MIN(t_sub_sum_quantity.SumQuantity)
+                                    FROM (SELECT DISTINCT supplier_id,
+                                                          (SELECT SUM(product_quantity)
+                                                           FROM table_products AS t_sub_products
+                                                           WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
+                                          FROM table_products AS t_products) AS t_sub_sum_quantity)
   AND table_product_suppliers.id = t_sum_quantity.supplier_id;
 
 ### Показать информацию о типе товаров с наибольшим количеством товаров на складе
@@ -352,41 +350,43 @@ FROM (SELECT DISTINCT supplier_id,
                        WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
       FROM table_products AS t_products) AS t_sub_sum_quantity;
 ####
-SELECT
-    t_sum_quantity.type_id, table_product_types.type_name, t_sum_quantity.SumQuantity
-FROM
-    (SELECT DISTINCT type_id,
-                     (SELECT SUM(product_quantity)
-                      FROM table_products AS t_sub_products
-                      WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
-     FROM table_products AS t_products) AS t_sum_quantity,
-    table_product_types
-WHERE
-        t_sum_quantity.SumQuantity = (SELECT MAX(t_sub_sum_quantity.SumQuantity)
-                                      FROM (SELECT DISTINCT supplier_id,
-                                                            (SELECT SUM(product_quantity)
-                                                             FROM table_products AS t_sub_products
-                                                             WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
-                                            FROM table_products AS t_products) AS t_sub_sum_quantity)
+SELECT t_sum_quantity.type_id,
+       table_product_types.type_name,
+       t_sum_quantity.SumQuantity
+FROM (SELECT DISTINCT type_id,
+                      (SELECT SUM(product_quantity)
+                       FROM table_products AS t_sub_products
+                       WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
+      FROM table_products AS t_products) AS t_sum_quantity,
+     table_product_types
+WHERE t_sum_quantity.SumQuantity = (SELECT MAX(t_sub_sum_quantity.SumQuantity)
+                                    FROM (SELECT DISTINCT supplier_id,
+                                                          (SELECT SUM(product_quantity)
+                                                           FROM table_products AS t_sub_products
+                                                           WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
+                                          FROM table_products AS t_products) AS t_sub_sum_quantity)
   AND table_product_types.id = t_sum_quantity.type_id;
 
 ### Показать информацию о типе товаров с наименьшим количеством товаров на складе
-SELECT
-    t_sum_quantity.type_id, table_product_types.type_name, t_sum_quantity.SumQuantity
-FROM
-    (SELECT DISTINCT type_id,
-                     (SELECT SUM(product_quantity)
-                      FROM table_products AS t_sub_products
-                      WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
-     FROM table_products AS t_products) AS t_sum_quantity,
-    table_product_types
-WHERE
-        t_sum_quantity.SumQuantity = (SELECT MIN(t_sub_sum_quantity.SumQuantity)
-                                      FROM (SELECT DISTINCT supplier_id,
-                                                            (SELECT SUM(product_quantity)
-                                                             FROM table_products AS t_sub_products
-                                                             WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
-                                            FROM table_products AS t_products) AS t_sub_sum_quantity)
+SELECT t_sum_quantity.type_id,
+       table_product_types.type_name,
+       t_sum_quantity.SumQuantity
+FROM (SELECT DISTINCT type_id,
+                      (SELECT SUM(product_quantity)
+                       FROM table_products AS t_sub_products
+                       WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
+      FROM table_products AS t_products) AS t_sum_quantity,
+     table_product_types
+WHERE t_sum_quantity.SumQuantity = (SELECT MIN(t_sub_sum_quantity.SumQuantity)
+                                    FROM (SELECT DISTINCT supplier_id,
+                                                          (SELECT SUM(product_quantity)
+                                                           FROM table_products AS t_sub_products
+                                                           WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
+                                          FROM table_products AS t_products) AS t_sub_sum_quantity)
   AND table_product_types.id = t_sum_quantity.type_id;
 
 ### Показать товары с поставки, которых прошло заданное количество дней
+SELECT *
+FROM table_products
+WHERE date_delivery < DATE_SUB(NOW(), INTERVAL 3 DAY)
+ORDER BY date_delivery;
