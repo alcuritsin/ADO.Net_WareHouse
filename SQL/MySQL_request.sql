@@ -367,7 +367,7 @@ WHERE t_sum_quantity.SumQuantity = (SELECT MAX(t_sub_sum_quantity.SumQuantity)
                                           FROM table_products AS t_products) AS t_sub_sum_quantity)
   AND table_product_types.id = t_sum_quantity.type_id;
 
-### Показать информацию о типе товаров с наименьшим количеством товаров на складе
+### Показать информацию о типе товаров с наименьшим количеством товаров на складе --done
 SELECT t_sum_quantity.type_id,
        table_product_types.type_name,
        t_sum_quantity.SumQuantity

@@ -211,20 +211,28 @@ do
             CLI.ShoTable(db.GetSupplierMaxQuantity());
             db.Close();
             break;
+        
         case "240_2": // Показать информацию о поставщике с наименьшим количеством товаров на складе
             CLI.ShowMessage(":: Показать информацию о поставщике с наименьшим количеством товаров на складе ::");
             db.Open();
             CLI.ShoTable(db.GetSupplierMinQuantity());
             db.Close();
             break;
+        
         case "240_3": // Показать информацию о типе товаров с наибольшим количеством товаров на складе
             CLI.ShowMessage(":: Показать информацию о типе товаров с наибольшим количеством товаров на складе ::");
             db.Open();
             CLI.ShoTable(db.GetTypeProductMaxQuantity());
             db.Close();
             break;
+        
         case "240_4": // Показать информацию о типе товаров с наименьшим количеством товаров на складе
+            CLI.ShowMessage(":: Показать информацию о типе товаров с наименьшим количеством товаров на складе ::");
+            db.Open();
+            CLI.ShoTable(db.GetTypeProductMinQuantity());
+            db.Close();
             break;
+        
         case "240_5": // Показать товары с поставки, которых прошло заданное количество дней
             break;
 
