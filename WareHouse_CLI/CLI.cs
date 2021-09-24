@@ -206,5 +206,31 @@ namespace WareHouse_CLI
             Console.WriteLine("Программа завершена.");
             Console.ReadKey();
         }
+
+        public static void ShoTable(AnyTables table)
+        {
+            
+            Console.Write("\n:: Title ::");
+            Console.Write("\n|");
+            foreach (var cell in table.Title.Row)
+            {
+                Console.Write($"   {cell.GetValue()}   |");
+                
+            }
+
+            // Console.WriteLine("\n-----------------------------");
+            
+            Console.Write("\n:: Tables ::");
+            Console.Write("\n|");
+            foreach (var row in table.Table)
+            {
+                foreach (var cell in row.Row)
+                {
+                    Console.Write($"   {cell.GetValue()}   |");
+                }
+            }
+            
+            Console.WriteLine("\n-----------------------------");
+        }
     }
 }

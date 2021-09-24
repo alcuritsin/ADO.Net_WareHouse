@@ -10,7 +10,7 @@ using WareHouse_CLI;
 
 var db = new DataBase();
 var exit = false;
-string menuLevel = "230";
+string menuLevel = "240";
 
 do
 {
@@ -206,6 +206,10 @@ do
         #region Menu 240
 
         case "240_1": // Показать информацию о поставщике с наибольшим количеством товаров на складе
+            CLI.ShowMessage(":: Показать информацию о поставщике с наибольшим количеством товаров на складе ::");
+            db.Open();
+            CLI.ShoTable(db.GetSupplierMaxQuantity());
+            db.Close();
             break;
         case "240_2": // Показать информацию о поставщике с наименьшим количеством товаров на складе
             break;
@@ -458,6 +462,7 @@ void UpdateProductSupplier()
         CLI.ShowMessage("Изменения не внесены.");
     }
 }
+
 void UpdateProductType()
 {
     // Обновление информации о существующих типах товаров
