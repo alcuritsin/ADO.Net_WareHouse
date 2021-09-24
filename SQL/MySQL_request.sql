@@ -386,7 +386,11 @@ WHERE t_sum_quantity.SumQuantity = (SELECT MIN(t_sub_sum_quantity.SumQuantity)
   AND table_product_types.id = t_sum_quantity.type_id;
 
 ### Показать товары с поставки, которых прошло заданное количество дней
-SELECT *
-FROM table_products
+SELECT p.id, p.product_name, t.type_name, s.suppliers_name, p.product_quantity, p.product_cost, p.date_delivery
+FROM table_products AS p,
+     table_product_types AS t,
+     table_product_suppliers AS s
 WHERE date_delivery < DATE_SUB(NOW(), INTERVAL 3 DAY)
+  AND p.type_id = t.id
+  AND p.supplier_id = s.id
 ORDER BY date_delivery;

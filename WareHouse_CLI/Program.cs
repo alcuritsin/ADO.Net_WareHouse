@@ -10,7 +10,7 @@ using WareHouse_CLI;
 
 var db = new DataBase();
 var exit = false;
-string menuLevel = "240";
+string menuLevel = "000";
 
 do
 {
@@ -234,6 +234,7 @@ do
             break;
         
         case "240_5": // Показать товары с поставки, которых прошло заданное количество дней
+            GetProductWhereDeliveryOldDay();
             break;
 
         #endregion // 240
@@ -564,5 +565,15 @@ void DeleteProductType()
     
     db.Open();
     CLI.ShowMessage($"Измененно {db.DeleteProductTypeById(typeId)} строк.");
+    db.Close();
+}
+
+void GetProductWhereDeliveryOldDay()
+{
+    CLI.ShowMessage(": Показать товары с поставки, которых прошло заданное количество дней :");
+    int day = CLI.InputChoice("Введиет количество дней: ");
+    
+    db.Open();
+    CLI.ShoTable(db.GetProductWhereDeliveryOldDay(day));
     db.Close();
 }

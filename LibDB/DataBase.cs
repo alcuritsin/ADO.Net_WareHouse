@@ -636,6 +636,49 @@ WHERE t_sum_quantity.SumQuantity = (SELECT MIN(t_sub_sum_quantity.SumQuantity)
 
             return table;
         }
+        public AnyTables GetProductWhereDeliveryOldDay(int day)
+        {
+
+            string sqlExpression =
+                $@"
+SELECT p.id, p.product_name, t.type_name, s.suppliers_name, p.product_quantity, p.product_cost, p.date_delivery
+FROM table_products AS p,
+     table_product_types AS t,
+     table_product_suppliers AS s
+WHERE date_delivery < DATE_SUB(NOW(), INTERVAL {day} DAY)
+  AND p.type_id = t.id
+  AND p.supplier_id = s.id
+ORDER BY date_delivery;";
+
+            MySqlDataReader answer = GetAnswer(sqlExpression);
+
+            AnyTables table = new AnyTables();
+
+            table.AddToTitle("id");
+            table.AddToTitle("Продукт");
+            table.AddToTitle("Тип продукта");
+            table.AddToTitle("Поставщик");
+            table.AddToTitle("Количество");
+            table.AddToTitle("Себестоимость");
+            table.AddToTitle("Дата поставки");
+
+            while (answer.Read())
+            {
+                TableRow rowTable = new TableRow();
+
+                rowTable.AddCell(answer.GetString("id"));
+                rowTable.AddCell(answer.GetString("product_name"));
+                rowTable.AddCell(answer.GetString("type_name"));
+                rowTable.AddCell(answer.GetString("suppliers_name"));
+                rowTable.AddCell(answer.GetString("product_quantity"));
+                rowTable.AddCell(answer.GetString("product_cost"));
+                rowTable.AddCell(answer.GetString("date_delivery"));
+                
+                table.AddToTable(rowTable); 
+            }
+
+            return table;
+        }
 
         #endregion
 
