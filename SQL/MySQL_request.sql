@@ -335,7 +335,7 @@ WHERE t_sum_quantity.SumQuantity = (SELECT MIN(t_sub_sum_quantity.SumQuantity)
                                           FROM table_products AS t_products) AS t_sub_sum_quantity)
   AND table_product_suppliers.id = t_sum_quantity.supplier_id;
 
-### Показать информацию о типе товаров с наибольшим количеством товаров на складе
+### Показать информацию о типе товаров с наибольшим количеством товаров на складе --done
 ####
 SELECT DISTINCT type_id,
                 (SELECT SUM(product_quantity)
