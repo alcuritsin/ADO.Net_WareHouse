@@ -477,35 +477,76 @@ WHERE table_product_types.id = {type_id};";
 
             string sqlExpression =
                 $@"
-SELECT t_sum_quantity.type_id,
-       table_product_types.type_name,
+SELECT t_sum_quantity.supplier_id,
+       table_product_suppliers.suppliers_name,
        t_sum_quantity.SumQuantity
-FROM (SELECT DISTINCT type_id,
+FROM (SELECT DISTINCT supplier_id,
                       (SELECT SUM(product_quantity)
                        FROM table_products AS t_sub_products
-                       WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
+                       WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
       FROM table_products AS t_products) AS t_sum_quantity,
-     table_product_types
+     table_product_suppliers
 WHERE t_sum_quantity.SumQuantity = (SELECT MAX(t_sub_sum_quantity.SumQuantity)
                                     FROM (SELECT DISTINCT supplier_id,
                                                           (SELECT SUM(product_quantity)
                                                            FROM table_products AS t_sub_products
-                                                           WHERE t_sub_products.type_id = t_products.type_id) AS SumQuantity
+                                                           WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
                                           FROM table_products AS t_products) AS t_sub_sum_quantity)
-  AND table_product_types.id = t_sum_quantity.type_id;";
+  AND table_product_suppliers.id = t_sum_quantity.supplier_id;";
 
             MySqlDataReader answer = GetAnswer(sqlExpression);
 
             AnyTables table = new AnyTables();
 
-            table.AddToTitle("Тип продукта");
+            table.AddToTitle("Поставщик");
             table.AddToTitle("Количество товаров на складе");
 
             while (answer.Read())
             {
                 TableRow rowTable = new TableRow();
 
-                rowTable.AddCell(answer.GetString("type_name"));
+                rowTable.AddCell(answer.GetString("suppliers_name"));
+                rowTable.AddCell(answer.GetString("SumQuantity"));
+                
+                table.AddToTable(rowTable); 
+            }
+
+            return table;
+        }
+        public AnyTables GetSupplierMinQuantity()
+        {
+
+            string sqlExpression =
+                $@"
+SELECT t_sum_quantity.supplier_id,
+       table_product_suppliers.suppliers_name,
+       t_sum_quantity.SumQuantity
+FROM (SELECT DISTINCT supplier_id,
+                      (SELECT SUM(product_quantity)
+                       FROM table_products AS t_sub_products
+                       WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
+      FROM table_products AS t_products) AS t_sum_quantity,
+     table_product_suppliers
+WHERE t_sum_quantity.SumQuantity = (SELECT MIN(t_sub_sum_quantity.SumQuantity)
+                                    FROM (SELECT DISTINCT supplier_id,
+                                                          (SELECT SUM(product_quantity)
+                                                           FROM table_products AS t_sub_products
+                                                           WHERE t_sub_products.supplier_id = t_products.supplier_id) AS SumQuantity
+                                          FROM table_products AS t_products) AS t_sub_sum_quantity)
+  AND table_product_suppliers.id = t_sum_quantity.supplier_id;";
+
+            MySqlDataReader answer = GetAnswer(sqlExpression);
+
+            AnyTables table = new AnyTables();
+
+            table.AddToTitle("Поставщик");
+            table.AddToTitle("Количество товаров на складе");
+
+            while (answer.Read())
+            {
+                TableRow rowTable = new TableRow();
+
+                rowTable.AddCell(answer.GetString("suppliers_name"));
                 rowTable.AddCell(answer.GetString("SumQuantity"));
                 
                 table.AddToTable(rowTable); 

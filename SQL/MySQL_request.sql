@@ -281,7 +281,7 @@ FROM table_product_types
 WHERE table_product_types.id = 1;
 
 ## Задание 4
-### Показать информацию о поставщике с наибольшим количеством товаров на складе
+### Показать информацию о поставщике с наибольшим количеством товаров на складе --done
 #### Узнать количество товаров каждого поставщика на складе.
 #### Запрос на получение списка поставщик - сумма товара поставщика на складе
 SELECT DISTINCT supplier_id,
@@ -317,7 +317,7 @@ WHERE t_sum_quantity.SumQuantity = (SELECT MAX(t_sub_sum_quantity.SumQuantity)
                                           FROM table_products AS t_products) AS t_sub_sum_quantity)
   AND table_product_suppliers.id = t_sum_quantity.supplier_id;
 
-### Показать информацию о поставщике с наименьшим количеством товаров на складе
+### Показать информацию о поставщике с наименьшим количеством товаров на складе --done
 SELECT t_sum_quantity.supplier_id,
        table_product_suppliers.suppliers_name,
        t_sum_quantity.SumQuantity
